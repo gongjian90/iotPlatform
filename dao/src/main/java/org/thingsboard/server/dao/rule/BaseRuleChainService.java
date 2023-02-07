@@ -68,6 +68,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.thingsboard.server.common.data.DataConstants.TENANT;
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 import static org.thingsboard.server.dao.service.Validator.validatePageLink;
 import static org.thingsboard.server.dao.service.Validator.validateString;
@@ -81,7 +82,6 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     private static final int DEFAULT_PAGE_SIZE = 1000;
 
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
     public static final String TB_RULE_CHAIN_INPUT_NODE = "org.thingsboard.rule.engine.flow.TbRuleChainInputNode";
     @Autowired
     private RuleChainDao ruleChainDao;
@@ -130,7 +130,7 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public RuleChainUpdateResult saveRuleChainMetaData(TenantId tenantId, RuleChainMetaData ruleChainMetaData) {
-        Validator.validateId(ruleChainMetaData.getRuleChainId(), "Incorrect rule chain id.");
+        Validator.validateId(ruleChainMetaData.getRuleChainId(), INCORRECT_RULE_CHAIN_ID);
         RuleChain ruleChain = findRuleChainById(tenantId, ruleChainMetaData.getRuleChainId());
         if (ruleChain == null) {
             return RuleChainUpdateResult.failed();
@@ -245,7 +245,7 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public RuleChainMetaData loadRuleChainMetaData(TenantId tenantId, RuleChainId ruleChainId) {
-        Validator.validateId(ruleChainId, "Incorrect rule chain id.");
+        Validator.validateId(ruleChainId, INCORRECT_RULE_CHAIN_ID);
         RuleChain ruleChain = findRuleChainById(tenantId, ruleChainId);
         if (ruleChain == null) {
             return null;
@@ -285,37 +285,37 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public RuleChain findRuleChainById(TenantId tenantId, RuleChainId ruleChainId) {
-        Validator.validateId(ruleChainId, "Incorrect rule chain id for search request.");
+        Validator.validateId(ruleChainId, INCORRECT_RULE_CHAIN_ID_SEARCH_REQUEST);
         return ruleChainDao.findById(tenantId, ruleChainId.getId());
     }
 
     @Override
     public RuleNode findRuleNodeById(TenantId tenantId, RuleNodeId ruleNodeId) {
-        Validator.validateId(ruleNodeId, "Incorrect rule node id for search request.");
+        Validator.validateId(ruleNodeId, INCORRECT_RULE_NODE_ID_SEARCH_REQUEST);
         return ruleNodeDao.findById(tenantId, ruleNodeId.getId());
     }
 
     @Override
     public ListenableFuture<RuleChain> findRuleChainByIdAsync(TenantId tenantId, RuleChainId ruleChainId) {
-        Validator.validateId(ruleChainId, "Incorrect rule chain id for search request.");
+        Validator.validateId(ruleChainId, INCORRECT_RULE_CHAIN_ID_SEARCH_REQUEST);
         return ruleChainDao.findByIdAsync(tenantId, ruleChainId.getId());
     }
 
     @Override
     public ListenableFuture<RuleNode> findRuleNodeByIdAsync(TenantId tenantId, RuleNodeId ruleNodeId) {
-        Validator.validateId(ruleNodeId, "Incorrect rule node id for search request.");
+        Validator.validateId(ruleNodeId, INCORRECT_RULE_NODE_ID_SEARCH_REQUEST);
         return ruleNodeDao.findByIdAsync(tenantId, ruleNodeId.getId());
     }
 
     @Override
     public RuleChain getRootTenantRuleChain(TenantId tenantId) {
-        Validator.validateId(tenantId, "Incorrect tenant id for search request.");
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID_SEARCH_REQUEST);
         return ruleChainDao.findRootRuleChainByTenantIdAndType(tenantId.getId(), RuleChainType.CORE);
     }
 
     @Override
     public List<RuleNode> getRuleChainNodes(TenantId tenantId, RuleChainId ruleChainId) {
-        Validator.validateId(ruleChainId, "Incorrect rule chain id for search request.");
+        Validator.validateId(ruleChainId, INCORRECT_RULE_CHAIN_ID_SEARCH_REQUEST);
         List<EntityRelation> relations = getRuleChainToNodeRelations(tenantId, ruleChainId);
         List<RuleNode> ruleNodes = new ArrayList<>();
         for (EntityRelation relation : relations) {
@@ -331,7 +331,7 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public List<RuleNode> getReferencingRuleChainNodes(TenantId tenantId, RuleChainId ruleChainId) {
-        Validator.validateId(ruleChainId, "Incorrect rule chain id for search request.");
+        Validator.validateId(ruleChainId, INCORRECT_RULE_CHAIN_ID_SEARCH_REQUEST);
         List<EntityRelation> relations = getNodeToRuleChainRelations(tenantId, ruleChainId);
         List<RuleNode> ruleNodes = new ArrayList<>();
         for (EntityRelation relation : relations) {
@@ -345,7 +345,7 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public List<EntityRelation> getRuleNodeRelations(TenantId tenantId, RuleNodeId ruleNodeId) {
-        Validator.validateId(ruleNodeId, "Incorrect rule node id for search request.");
+        Validator.validateId(ruleNodeId, INCORRECT_RULE_NODE_ID_SEARCH_REQUEST);
         List<EntityRelation> relations = relationService.findByFrom(tenantId, ruleNodeId, RelationTypeGroup.RULE_NODE);
         List<EntityRelation> validRelations = new ArrayList<>();
         for (EntityRelation relation : relations) {
@@ -372,7 +372,7 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public PageData<RuleChain> findTenantRuleChainsByType(TenantId tenantId, RuleChainType type, PageLink pageLink) {
-        Validator.validateId(tenantId, "Incorrect tenant id for search rule chain request.");
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID_SEARCH_RULE_CHAIN_REQUEST);
         Validator.validatePageLink(pageLink);
         return ruleChainDao.findRuleChainsByTenantIdAndType(tenantId.getId(), type, pageLink);
     }
@@ -385,7 +385,7 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
     @Override
     @Transactional
     public void deleteRuleChainById(TenantId tenantId, RuleChainId ruleChainId) {
-        Validator.validateId(ruleChainId, "Incorrect rule chain id for delete request.");
+        Validator.validateId(ruleChainId, INCORRECT_RULE_CHAIN_ID_DELETE_REQUEST);
         RuleChain ruleChain = ruleChainDao.findById(tenantId, ruleChainId.getId());
         if (ruleChain != null) {
             if (ruleChain.isRoot()) {
@@ -414,13 +414,13 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
 
     @Override
     public void deleteRuleChainsByTenantId(TenantId tenantId) {
-        Validator.validateId(tenantId, "Incorrect tenant id for delete rule chains request.");
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID_DELETE_RULE_CHAINS_REQUEST);
         tenantRuleChainsRemover.removeEntities(tenantId, tenantId);
     }
 
     @Override
     public RuleChainData exportTenantRuleChains(TenantId tenantId, PageLink pageLink) {
-        Validator.validateId(tenantId, "Incorrect tenant id for search rule chain request.");
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID_SEARCH_RULE_CHAIN_REQUEST);
         Validator.validatePageLink(pageLink);
         PageData<RuleChain> ruleChainData = ruleChainDao.findRuleChainsByTenantId(tenantId.getId(), pageLink);
         List<RuleChain> ruleChains = ruleChainData.getData();
@@ -599,15 +599,15 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
     @Override
     public PageData<RuleChain> findRuleChainsByTenantIdAndEdgeId(TenantId tenantId, EdgeId edgeId, PageLink pageLink) {
         log.trace("Executing findRuleChainsByTenantIdAndEdgeId, tenantId [{}], edgeId [{}], pageLink [{}]", tenantId, edgeId, pageLink);
-        Validator.validateId(tenantId, "Incorrect tenantId " + tenantId);
-        Validator.validateId(edgeId, "Incorrect edgeId " + edgeId);
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        Validator.validateId(edgeId, INCORRECT_EDGE_ID + edgeId);
         Validator.validatePageLink(pageLink);
         return ruleChainDao.findRuleChainsByTenantIdAndEdgeId(tenantId.getId(), edgeId.getId(), pageLink);
     }
 
     @Override
     public RuleChain getEdgeTemplateRootRuleChain(TenantId tenantId) {
-        Validator.validateId(tenantId, "Incorrect tenant id for search request.");
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID_SEARCH_REQUEST);
         return ruleChainDao.findRootRuleChainByTenantIdAndType(tenantId.getId(), RuleChainType.EDGE);
     }
 
@@ -667,8 +667,8 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
     public List<RuleNode> findRuleNodesByTenantIdAndType(TenantId tenantId, String type, String search) {
         log.trace("Executing findRuleNodes, tenantId [{}], type {}, search {}", tenantId, type, search);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        validateString(type, "Incorrect type of the rule node");
-        validateString(search, "Incorrect search text");
+        validateString(type, INCORRECT_RULE_NODE_TYPE);
+        validateString(search, INCORRECT_SEARCH_TEXT);
         return ruleNodeDao.findRuleNodesByTenantIdAndType(tenantId, type, search);
     }
 
@@ -676,14 +676,14 @@ public class BaseRuleChainService extends AbstractEntityService implements RuleC
     public List<RuleNode> findRuleNodesByTenantIdAndType(TenantId tenantId, String type) {
         log.trace("Executing findRuleNodes, tenantId [{}], type {}", tenantId, type);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        validateString(type, "Incorrect type of the rule node");
+        validateString(type, INCORRECT_RULE_NODE_TYPE);
         return ruleNodeDao.findRuleNodesByTenantIdAndType(tenantId, type, "");
     }
 
     @Override
     public PageData<RuleNode> findAllRuleNodesByType(String type, PageLink pageLink) {
         log.trace("Executing findAllRuleNodesByType, type {}, pageLink {}", type, pageLink);
-        validateString(type, "Incorrect type of the rule node");
+        validateString(type, INCORRECT_RULE_NODE_TYPE);
         validatePageLink(pageLink);
         return ruleNodeDao.findAllRuleNodesByType(type, pageLink);
     }

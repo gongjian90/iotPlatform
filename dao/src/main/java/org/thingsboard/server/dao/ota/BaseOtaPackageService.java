@@ -42,6 +42,8 @@ import org.thingsboard.server.dao.service.PaginatedRemover;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_OTA_PACKAGE_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_TENANT_ID;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 import static org.thingsboard.server.dao.service.Validator.validatePageLink;
 
@@ -49,8 +51,6 @@ import static org.thingsboard.server.dao.service.Validator.validatePageLink;
 @Slf4j
 @RequiredArgsConstructor
 public class BaseOtaPackageService extends AbstractCachedEntityService<OtaPackageCacheKey, OtaPackageInfo, OtaPackageCacheEvictEvent> implements OtaPackageService {
-    public static final String INCORRECT_OTA_PACKAGE_ID = "Incorrect otaPackageId ";
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
 
     private final OtaPackageDao otaPackageDao;
     private final OtaPackageInfoDao otaPackageInfoDao;

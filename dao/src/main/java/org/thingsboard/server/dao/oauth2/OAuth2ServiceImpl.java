@@ -52,16 +52,13 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 import static org.thingsboard.server.dao.service.Validator.validateString;
 
 @Slf4j
 @Service
 public class OAuth2ServiceImpl extends AbstractEntityService implements OAuth2Service {
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    public static final String INCORRECT_CLIENT_REGISTRATION_ID = "Incorrect clientRegistrationId ";
-    public static final String INCORRECT_DOMAIN_NAME = "Incorrect domainName ";
-    public static final String INCORRECT_DOMAIN_SCHEME = "Incorrect domainScheme ";
 
     @Autowired
     private OAuth2ParamsDao oauth2ParamsDao;
@@ -146,7 +143,7 @@ public class OAuth2ServiceImpl extends AbstractEntityService implements OAuth2Se
     public String findAppSecret(UUID id, String pkgName) {
         log.trace("Executing findAppSecret [{}][{}]", id, pkgName);
         validateId(id, INCORRECT_CLIENT_REGISTRATION_ID + id);
-        validateString(pkgName, "Incorrect package name");
+        validateString(pkgName, INCORRECT_PACKAGE_NAME);
         return oauth2RegistrationDao.findAppSecret(id, pkgName);
     }
 

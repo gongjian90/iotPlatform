@@ -118,4 +118,6 @@ public class DataConstants {
     public static final String MSG_SOURCE_KEY = "source";
 
     public static final String LAST_CONNECTED_GATEWAY = "lastConnectedGateway";
+    public static final String INSTALLATION_INSTANCE = "instance"; //  add by gj 2022年12月03日16:59:51
+    public static final String INSTALLATION_PACK = "pack"; //  add by gj 2022年12月03日16:59:51
 }

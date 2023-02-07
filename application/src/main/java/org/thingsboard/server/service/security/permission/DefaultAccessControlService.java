@@ -27,14 +27,11 @@ import org.thingsboard.server.service.security.model.SecurityUser;
 
 import java.util.*;
 
-import static org.thingsboard.server.dao.service.Validator.validateId;
+import static org.thingsboard.server.controller.ControllerConstants.YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION;
 
 @Service
 @Slf4j
 public class DefaultAccessControlService implements AccessControlService {
-
-    private static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    private static final String YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION = "You don't have permission to perform this operation!";
 
     private final Map<Authority, Permissions> authorityPermissions = new HashMap<>();
 

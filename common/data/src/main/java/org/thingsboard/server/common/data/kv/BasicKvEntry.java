@@ -25,6 +25,8 @@ public abstract class BasicKvEntry implements KvEntry {
     @Length(fieldName = "attribute key")
     private final String key;
 
+    private Aggregation aggregation;
+
     protected BasicKvEntry(String key) {
         this.key = key;
     }
@@ -77,5 +79,13 @@ public abstract class BasicKvEntry implements KvEntry {
         return "BasicKvEntry{" +
                 "key='" + key + '\'' +
                 '}';
+    }
+
+    public void setAggregation(Aggregation aggregation) {
+        this.aggregation = aggregation;
+    }
+
+    public Aggregation getAggregation() {
+        return aggregation;
     }
 }

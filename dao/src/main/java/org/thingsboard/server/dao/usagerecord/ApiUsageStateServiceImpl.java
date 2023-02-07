@@ -43,12 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Service
 @Slf4j
 public class ApiUsageStateServiceImpl extends AbstractEntityService implements ApiUsageStateService {
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
 
     private final ApiUsageStateDao apiUsageStateDao;
     private final TenantProfileDao tenantProfileDao;
@@ -76,7 +76,7 @@ public class ApiUsageStateServiceImpl extends AbstractEntityService implements A
     @Override
     public void deleteApiUsageStateByEntityId(EntityId entityId) {
         log.trace("Executing deleteApiUsageStateByEntityId [{}]", entityId);
-        validateId(entityId.getId(), "Invalid entity id");
+        validateId(entityId.getId(), INCORRECT_ENTITY_ID);
         apiUsageStateDao.deleteApiUsageStateByEntityId(entityId);
     }
 
@@ -149,7 +149,7 @@ public class ApiUsageStateServiceImpl extends AbstractEntityService implements A
 
     @Override
     public ApiUsageState findApiUsageStateByEntityId(EntityId entityId) {
-        validateId(entityId.getId(), "Invalid entity id");
+        validateId(entityId.getId(), INCORRECT_ENTITY_ID);
         return apiUsageStateDao.findApiUsageStateByEntityId(entityId);
     }
 
@@ -157,7 +157,7 @@ public class ApiUsageStateServiceImpl extends AbstractEntityService implements A
     public ApiUsageState findApiUsageStateById(TenantId tenantId, ApiUsageStateId id) {
         log.trace("Executing findApiUsageStateById, tenantId [{}], apiUsageStateId [{}]", tenantId, id);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        validateId(id, "Incorrect apiUsageStateId " + id);
+        validateId(id, INCORRECT_API_USAGE_STATE_ID + id);
         return apiUsageStateDao.findById(tenantId, id.getId());
     }
 

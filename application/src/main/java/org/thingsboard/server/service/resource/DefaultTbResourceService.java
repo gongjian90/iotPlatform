@@ -53,7 +53,7 @@ import java.util.stream.Stream;
 
 import static org.thingsboard.server.common.data.lwm2m.LwM2mConstants.LWM2M_SEPARATOR_KEY;
 import static org.thingsboard.server.common.data.lwm2m.LwM2mConstants.LWM2M_SEPARATOR_SEARCH_TEXT;
-import static org.thingsboard.server.dao.device.DeviceServiceImpl.INCORRECT_TENANT_ID;
+import static org.thingsboard.server.controller.ControllerConstants.INCORRECT_TENANT_ID;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Slf4j

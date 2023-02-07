@@ -42,4 +42,8 @@ public interface KvEntry extends Serializable {
     String getValueAsString();
 
     Object getValue();
+
+    void setAggregation(Aggregation aggregation);
+
+    Aggregation getAggregation();
 }

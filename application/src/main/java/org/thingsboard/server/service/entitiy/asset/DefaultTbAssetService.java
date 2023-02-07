@@ -38,7 +38,7 @@ import org.thingsboard.server.service.profile.TbAssetProfileCache;
 
 import java.util.List;
 
-import static org.thingsboard.server.dao.asset.BaseAssetService.TB_SERVICE_QUEUE;
+import static org.thingsboard.server.controller.ControllerConstants.TB_SERVICE_QUEUE;
 
 @Service
 @AllArgsConstructor

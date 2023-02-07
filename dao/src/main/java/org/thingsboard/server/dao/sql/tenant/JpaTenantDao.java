@@ -62,7 +62,10 @@ public class JpaTenantDao extends JpaAbstractSearchTextDao<TenantEntity, Tenant>
     public TenantInfo findTenantInfoById(TenantId tenantId, UUID id) {
         return DaoUtil.getData(tenantRepository.findTenantInfoById(id));
     }
-
+    @Override
+    public Tenant findTenantByEmail(String email) {
+        return DaoUtil.getData(tenantRepository.findTenantByEmail(email));
+    }
     @Override
     public PageData<Tenant> findTenants(TenantId tenantId, PageLink pageLink) {
         return DaoUtil.toPageData(tenantRepository

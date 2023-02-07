@@ -22,4 +22,7 @@ public class TbUrlConstants {
     public static final String TELEMETRY_URL_PREFIX = "/api/plugins/telemetry";
     public static final String RPC_V1_URL_PREFIX = "/api/plugins/rpc";
     public static final String RPC_V2_URL_PREFIX = "/api/rpc";
+
+    public static final String NEW_TELEMETRY_URL_PREFIX = "/api/new/plugins/telemetry";
+    public static final String NEW_URL_PREFIX = "/api/new";
 }

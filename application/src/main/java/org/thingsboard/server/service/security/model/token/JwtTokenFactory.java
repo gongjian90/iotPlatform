@@ -26,15 +26,18 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.thingsboard.server.common.data.StringUtils;
+import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.id.UserId;
 import org.thingsboard.server.common.data.security.Authority;
 import org.thingsboard.server.common.data.security.model.JwtToken;
+import org.thingsboard.server.dao.user.UserService;
 import org.thingsboard.server.service.security.auth.jwt.settings.JwtSettingsService;
 import org.thingsboard.server.service.security.exception.JwtExpiredTokenException;
 import org.thingsboard.server.common.data.security.model.JwtPair;
@@ -64,7 +67,8 @@ public class JwtTokenFactory {
     private static final String SESSION_ID = "sessionId";
 
     private final JwtSettingsService jwtSettingsService;
-
+    @Autowired
+    private UserService userService;
     /**
      * Factory method for issuing new JWT Tokens.
      */
@@ -115,6 +119,13 @@ public class JwtTokenFactory {
         String customerId = claims.get(CUSTOMER_ID, String.class);
         if (customerId != null) {
             securityUser.setCustomerId(new CustomerId(UUID.fromString(customerId)));
+        }
+        /**
+         * add by gj 用户修改权限后需要重新登录 2022年12月31日11:59:04
+         */
+        User user = userService.findUserById(securityUser.getTenantId(), securityUser.getId());
+        if (null != user && !securityUser.getAuthority().equals(user.getAuthority())) {
+            throw new JwtExpiredTokenException("token is invalid");
         }
         if (claims.get(SESSION_ID, String.class) != null) {
             securityUser.setSessionId(claims.get(SESSION_ID, String.class));

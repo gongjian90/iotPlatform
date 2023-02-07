@@ -26,6 +26,9 @@ import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.Validator;
 
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_ADMIN_SETTING_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_KEY_STRING;
+
 @Service
 @Slf4j
 public class AdminSettingsServiceImpl implements AdminSettingsService {
@@ -39,14 +42,14 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
     @Override
     public AdminSettings findAdminSettingsById(TenantId tenantId, AdminSettingsId adminSettingsId) {
         log.trace("Executing findAdminSettingsById [{}]", adminSettingsId);
-        Validator.validateId(adminSettingsId, "Incorrect adminSettingsId " + adminSettingsId);
+        Validator.validateId(adminSettingsId, INCORRECT_ADMIN_SETTING_ID + adminSettingsId);
         return  adminSettingsDao.findById(tenantId, adminSettingsId.getId());
     }
 
     @Override
     public AdminSettings findAdminSettingsByKey(TenantId tenantId, String key) {
         log.trace("Executing findAdminSettingsByKey [{}]", key);
-        Validator.validateString(key, "Incorrect key " + key);
+        Validator.validateString(key, INCORRECT_KEY_STRING + key);
         return findAdminSettingsByTenantIdAndKey(TenantId.SYS_TENANT_ID, key);
     }
 
@@ -74,7 +77,7 @@ public class AdminSettingsServiceImpl implements AdminSettingsService {
     @Override
     public boolean deleteAdminSettingsByTenantIdAndKey(TenantId tenantId, String key) {
         log.trace("Executing deleteAdminSettings, tenantId [{}], key [{}]", tenantId, key);
-        Validator.validateString(key, "Incorrect key " + key);
+        Validator.validateString(key, INCORRECT_KEY_STRING + key);
         return adminSettingsDao.removeByTenantIdAndKey(tenantId.getId(), key);
     }
 

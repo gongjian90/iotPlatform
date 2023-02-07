@@ -28,6 +28,7 @@ import java.util.List;
 public interface TenantService {
 
     Tenant findTenantById(TenantId tenantId);
+    Tenant findTenantByEmail(String email); //  add by gj 2022年12月03日16:59:51
 
     TenantInfo findTenantInfoById(TenantId tenantId);
 
@@ -36,6 +37,8 @@ public interface TenantService {
     Tenant saveTenant(Tenant tenant);
 
     boolean tenantExists(TenantId tenantId);
+
+    Tenant saveTenantNoValidate(Tenant tenant); // add by gj 2022年12月03日16:59:51
 
     void deleteTenant(TenantId tenantId);
 

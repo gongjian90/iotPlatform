@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thingsboard.server.cluster.TbClusterService;
 import org.thingsboard.server.common.data.EntityType;
 import org.thingsboard.server.common.data.User;
@@ -29,19 +30,41 @@ import org.thingsboard.server.common.data.alarm.AlarmQuery;
 import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
 import org.thingsboard.server.common.data.id.AlarmId;
+import org.thingsboard.server.common.data.id.EdgeId;
 import org.thingsboard.server.common.data.id.EntityId;
 import org.thingsboard.server.common.data.id.EntityIdFactory;
 import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.page.PageData;
+import org.thingsboard.server.common.data.page.PageDataIterableByTenantIdEntityId;
 import org.thingsboard.server.common.data.page.TimePageLink;
+import org.thingsboard.server.common.data.relation.EntityRelation;
+import org.thingsboard.server.common.data.relation.RelationTypeGroup;
 import org.thingsboard.server.dao.alarm.AlarmService;
 import org.thingsboard.server.dao.customer.CustomerService;
+import org.thingsboard.server.dao.device.ClaimDevicesService;
+import org.thingsboard.server.dao.device.DeviceCredentialsService;
+import org.thingsboard.server.dao.device.DeviceService;
 import org.thingsboard.server.dao.edge.EdgeService;
 import org.thingsboard.server.dao.model.ModelConstants;
+import org.thingsboard.server.dao.newdevice.NewDeviceService;
+import org.thingsboard.server.dao.relation.RelationService;
+import org.thingsboard.server.dao.tenant.TbTenantProfileCache;
+import org.thingsboard.server.dao.tenant.TenantProfileService;
+import org.thingsboard.server.dao.tenant.TenantService;
+import org.thingsboard.server.dao.user.UserService;
+import org.thingsboard.server.service.entitiy.customer.TbCustomerService;
+import org.thingsboard.server.service.entitiy.newcustomer.NewTbCustomerService;
+import org.thingsboard.server.service.entitiy.newtenant.NewTbTenantService;
+import org.thingsboard.server.service.entitiy.queue.TbQueueService;
+import org.thingsboard.server.service.entitiy.tenant.TbTenantService;
+import org.thingsboard.server.service.entitiy.user.TbUserService;
 import org.thingsboard.server.service.executors.DbCallbackExecutorService;
+import org.thingsboard.server.service.install.InstallScripts;
 import org.thingsboard.server.service.sync.vc.EntitiesVersionControlService;
 import org.thingsboard.server.service.telemetry.AlarmSubscriptionService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -50,9 +73,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public abstract class AbstractTbEntityService {
 
+    protected static final int DEFAULT_PAGE_SIZE = 1000;
+
     @Value("${server.log_controller_error_stack_trace}")
     @Getter
     private boolean logControllerErrorStackTrace;
+    @Value("${edges.enabled}")
+    @Getter
+    protected boolean edgesEnabled;
 
     @Autowired
     protected DbCallbackExecutorService dbExecutor;
@@ -68,6 +96,45 @@ public abstract class AbstractTbEntityService {
     protected CustomerService customerService;
     @Autowired
     protected TbClusterService tbClusterService;
+    // add by gj reason: drgk begin 2022年12月03日17:26:26
+    @Autowired
+    protected UserService userService;
+    @Autowired
+    protected TenantService tenantService;
+    @Autowired
+    protected NewTbCustomerService newTbCustomerService;
+    @Autowired
+    protected NewTbTenantService newTbTenantService;
+    @Autowired
+    protected BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    protected TbTenantProfileCache tenantProfileCache;
+    @Autowired
+    protected InstallScripts installScripts;
+    @Autowired
+    protected TbQueueService tbQueueService;
+    @Autowired
+    protected TenantProfileService tenantProfileService;
+    @Autowired
+    protected TbTenantService tbTenantService;
+    @Autowired
+    protected TbUserService tbUserService;
+    @Autowired
+    protected TbCustomerService tbCustomerService;
+
+    @Autowired
+    protected DeviceService deviceService;
+    @Autowired
+    protected DeviceCredentialsService deviceCredentialsService;
+    @Autowired
+    protected NewDeviceService newDeviceService;
+    @Autowired
+    protected ClaimDevicesService claimDevicesService;
+    @Autowired
+    protected RelationService relationService;
+    @Autowired
+    protected EntitiesVersionControlService versionControlService;
+
     @Autowired(required = false)
     private EntitiesVersionControlService vcService;
 
@@ -107,6 +174,22 @@ public abstract class AbstractTbEntityService {
         }
     }
 
+    protected List<EdgeId> findRelatedEdgeIds(TenantId tenantId, EntityId entityId) {
+        if (!edgesEnabled) {
+            return null;
+        }
+        if (EntityType.EDGE.equals(entityId.getEntityType())) {
+            return Collections.singletonList(new EdgeId(entityId.getId()));
+        }
+        PageDataIterableByTenantIdEntityId<EdgeId> relatedEdgeIdsIterator =
+                new PageDataIterableByTenantIdEntityId<>(edgeService::findRelatedEdgeIdsByEntityId, tenantId, entityId, DEFAULT_PAGE_SIZE);
+        List<EdgeId> result = new ArrayList<>();
+        for (EdgeId edgeId : relatedEdgeIdsIterator) {
+            result.add(edgeId);
+        }
+        return result;
+    }
+
     protected <I extends EntityId> I emptyId(EntityType entityType) {
         return (I) EntityIdFactory.getByTypeAndUuid(entityType, ModelConstants.NULL_UUID);
     }
@@ -127,5 +210,14 @@ public abstract class AbstractTbEntityService {
             // We do not support auto-commit for rule engine
             return Futures.immediateFailedFuture(new RuntimeException("Operation not supported!"));
         }
+    }
+
+    protected void createRelationFromDevice(TenantId tenantId, EntityId entityIdFrom, EntityId entityIdTo) {
+        EntityRelation relation = new EntityRelation();
+        relation.setFrom(entityIdFrom);
+        relation.setTo(entityIdTo);
+        relation.setTypeGroup(RelationTypeGroup.USER_DEVICE);
+        relation.setType(EntityRelation.DEVICE_MASTER_TYPE);
+        relationService.saveRelation(tenantId, relation);
     }
 }

@@ -54,6 +54,67 @@ public class ModelConstants {
     public static final String ATTRIBUTE_TYPE_COLUMN = "attribute_type";
     public static final String ATTRIBUTE_KEY_COLUMN = "attribute_key";
     public static final String LAST_UPDATE_TS_COLUMN = "last_update_ts";
+    public static final String PUBLIC_CUSTOMER_TITLE = "Public";
+    public static final String TB_SERVICE_QUEUE = "TbServiceQueue";
+
+    public static final String TB_RULE_CHAIN_INPUT_NODE = "org.thingsboard.rule.engine.flow.TbRuleChainInputNode";
+    /**
+     * Validate
+     */
+    public static final String INCORRECT_INSTALLATION_ID = "Incorrect InstallationId ";
+    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
+    public static final String INCORRECT_USER_ID = "Incorrect userId ";
+    public static final String INCORRECT_DEVICE_PROFILE_ID = "Incorrect deviceProfileId ";
+    public static final String INCORRECT_CUSTOMER_ID = "Incorrect customerId ";
+    public static final String INCORRECT_DEVICE_ID = "Incorrect deviceId ";
+    public static final String INCORRECT_EDGE_ID = "Incorrect edgeId ";
+    public static final String INCORRECT_ASSET_ID = "Incorrect assetId ";
+    public static final String INCORRECT_ENTITY_ID = "Incorrect entityId ";
+    public static final String INCORRECT_OTA_PACKAGE_ID = "Incorrect otaPackageId ";
+    public static final String INCORRECT_CREDENTIALS_ID = "Incorrect credentialsId ";
+    public static final String INCORRECT_ALARM_ID = "Incorrect alarmId ";
+
+    public static final String INCORRECT_PAGE_LINK = "Incorrect page link ";
+    public static final String INCORRECT_WIDGETS_BUNDLE_ID = "Incorrect widgetsBundleId ";
+
+    public static final String INCORRECT_WIDGET_TYPE_ID = "Incorrect widgetTypeId ";
+    public static final String INCORRECT_DEVICE_PROFILE_NAME = "Incorrect deviceProfileName ";
+    public static final String INCORRECT_DEVICE_ID_LIST = "Incorrect deviceIds ";
+    public static final String INCORRECT_TYPE_STRING = "Incorrect type ";
+    public static final String INCORRECT_RULE_NODE_TYPE = "Incorrect type of the rule node";
+
+    public static final String INCORRECT_EMAIL_STRING = "Incorrect email ";
+    public static final String INCORRECT_ACTIVATE_TOKEN_STRING = "Incorrect activateToken ";
+    public static final String INCORRECT_RESET_TOKEN_STRING = "Incorrect resetToken ";
+    public static final String INCORRECT_PASSWORD_STRING = "Incorrect password ";
+    public static final String INCORRECT_ASSET_ID_LIST = "Incorrect assetIds ";
+    public static final String INCORRECT_EDGE_ID_LIST = "Incorrect edgeIds ";
+    public static final String INCORRECT_ID = "Incorrect id ";
+    public static final String INCORRECT_SCOPE_STRING = "Incorrect scope ";
+    public static final String INCORRECT_ATTRIBUTE_KEY = "Incorrect attribute key ";
+    public static final String INCORRECT_PACKAGE_NAME = "Incorrect package name ";
+    public static final String INCORRECT_RULE_CHAIN_ID = "Incorrect rule chain id.";
+    public static final String INCORRECT_RULE_CHAIN_ID_SEARCH_REQUEST = "Incorrect rule chain id for search request.";
+    public static final String INCORRECT_RULE_NODE_ID_SEARCH_REQUEST = "Incorrect rule node id for search request.";
+    public static final String INCORRECT_TENANT_ID_SEARCH_REQUEST = "Incorrect tenant id for search request.";
+    public static final String INCORRECT_TENANT_ID_SEARCH_RULE_CHAIN_REQUEST = "Incorrect tenant id for search rule chain request.";
+    public static final String INCORRECT_RULE_CHAIN_ID_DELETE_REQUEST = "Incorrect rule chain id for delete request.";
+    public static final String INCORRECT_TENANT_ID_DELETE_RULE_CHAINS_REQUEST = "Incorrect tenant id for delete rule chains request.";
+    public static final String INCORRECT_SEARCH_TEXT = "Incorrect search text ";
+    public static final String INCORRECT_ALIAS = "Incorrect alias ";
+    public static final String INCORRECT_BUNDLE_ALIAS = "Incorrect bundleAlias ";
+    public static final String INCORRECT_API_USAGE_STATE_ID = "Incorrect apiUsageStateId ";
+    public static final String INCORRECT_ADMIN_SETTING_ID = "Incorrect adminSettingsId ";
+    public static final String INCORRECT_KEY_STRING = "Incorrect key ";
+    public static final String INCORRECT_ENTITY_VIEW_ID = "Incorrect entityViewId ";
+    public static final String INCORRECT_DASHBOARD_ID = "Incorrect dashboardId ";
+
+    public static final String INCORRECT_PORTAL_ID = "Incorrect portal Id ";
+    public static final String INCORRECT_RESOURCE_ID = "Incorrect resourceId ";
+    public static final String INCORRECT_CLIENT_REGISTRATION_ID = "Incorrect clientRegistrationId ";
+    public static final String INCORRECT_DOMAIN_NAME = "Incorrect domainName ";
+    public static final String INCORRECT_DOMAIN_SCHEME = "Incorrect domainScheme ";
+    public static final String INCORRECT_RPC_ID = "Incorrect rpcId ";
 
     /**
      * Cassandra user constants.
@@ -157,6 +218,7 @@ public class ModelConstants {
     public static final String DEVICE_DEVICE_DATA_PROPERTY = "device_data";
     public static final String DEVICE_FIRMWARE_ID_PROPERTY = "firmware_id";
     public static final String DEVICE_SOFTWARE_ID_PROPERTY = "software_id";
+    public static final String DEVICE_INSTALLATION_ID_PROPERTY = "installation_id";
 
     public static final String DEVICE_BY_TENANT_AND_SEARCH_TEXT_COLUMN_FAMILY_NAME = "device_by_tenant_and_search_text";
     public static final String DEVICE_BY_TENANT_BY_TYPE_AND_SEARCH_TEXT_COLUMN_FAMILY_NAME = "device_by_tenant_by_type_and_search_text";
@@ -643,6 +705,17 @@ public class ModelConstants {
     public static final String QUEUE_COLUMN_FAMILY_NAME = "queue";
     public static final String QUEUE_ADDITIONAL_INFO_PROPERTY = ADDITIONAL_INFO_PROPERTY;
 
+    /**
+     * Installation constants.  // add by GJ 2023年01月08日20:31:48
+     */
+    public static final String INSTALLATION_COLUMN_FAMILY_NAME = "installation";
+    public static final String INSTALLATION_PORTAL_ID_PROPERTY = "portal_id";
+    public static final String INSTALLATION_NAME_PROPERTY = "name";
+    public static final String INSTALLATION_TYPE_PROPERTY = "type";
+    public static final String INSTALLATION_GSM_NUMBER_PROPERTY = "gsm_number";
+    public static final String INSTALLATION_IMAGE_PROPERTY = "image";
+    public static final String INSTALLATION_INSTALLATION_DATA_PROPERTY = "installation_data";
+    public static final String INSTALLATION_DESCRIPTION_PROPERTY = "description";
 
     protected static final String[] NONE_AGGREGATION_COLUMNS = new String[]{LONG_VALUE_COLUMN, DOUBLE_VALUE_COLUMN, BOOLEAN_VALUE_COLUMN, STRING_VALUE_COLUMN, JSON_VALUE_COLUMN, KEY_COLUMN, TS_COLUMN};
 

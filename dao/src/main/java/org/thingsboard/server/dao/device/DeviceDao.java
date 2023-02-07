@@ -73,7 +73,8 @@ public interface DeviceDao extends Dao<Device>, TenantEntityDao, ExportableEntit
      * @return the list of device objects
      */
     PageData<Device> findDevicesByTenantId(UUID tenantId, PageLink pageLink);
-
+    PageData<Device> findDevicesByInstallationId(UUID installationId, PageLink pageLink);
+    List<Device> findDevicesByInstallationId(UUID installationId);
     /**
      * Find device infos by tenantId and page link.
      *
@@ -82,6 +83,15 @@ public interface DeviceDao extends Dao<Device>, TenantEntityDao, ExportableEntit
      * @return the list of device info objects
      */
     PageData<DeviceInfo> findDeviceInfosByTenantId(UUID tenantId, PageLink pageLink);
+
+    /**
+     * Find devices by customerId and device name.
+     *
+     * @param customerId the customerId
+     * @param pageLink the page link
+     * @return the optional device object
+     */
+    PageData<Device> findDevicesByCustomerId(UUID customerId, PageLink pageLink);
 
     /**
      * Find devices by tenantId, type and page link.
@@ -209,6 +219,14 @@ public interface DeviceDao extends Dao<Device>, TenantEntityDao, ExportableEntit
     ListenableFuture<List<Device>> findDevicesByTenantIdCustomerIdAndIdsAsync(UUID tenantId, UUID customerId, List<UUID> deviceIds);
 
     /**
+     * Find devices by tenantId, customerId.
+     *
+     * @param tenantId the tenantId
+     * @param customerId the customerId
+     * @return the list of device objects
+     */
+    List<Device> findDevicesByTenantIdCustomerId(UUID tenantId, UUID customerId);
+    /**
      * Find devices by tenantId and device name.
      *
      * @param tenantId the tenantId
@@ -216,6 +234,9 @@ public interface DeviceDao extends Dao<Device>, TenantEntityDao, ExportableEntit
      * @return the optional device object
      */
     Optional<Device> findDeviceByTenantIdAndName(UUID tenantId, String name);
+
+
+    Optional<Device> findDeviceByName(String name);
 
     /**
      * Find tenants device types.

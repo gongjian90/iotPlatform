@@ -28,12 +28,11 @@ import org.thingsboard.server.dao.service.Validator;
 
 import java.util.List;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
+
 @Service
 @Slf4j
 public class WidgetTypeServiceImpl implements WidgetTypeService {
-
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    public static final String INCORRECT_BUNDLE_ALIAS = "Incorrect bundleAlias ";
     @Autowired
     private WidgetTypeDao widgetTypeDao;
 
@@ -43,14 +42,14 @@ public class WidgetTypeServiceImpl implements WidgetTypeService {
     @Override
     public WidgetType findWidgetTypeById(TenantId tenantId, WidgetTypeId widgetTypeId) {
         log.trace("Executing findWidgetTypeById [{}]", widgetTypeId);
-        Validator.validateId(widgetTypeId, "Incorrect widgetTypeId " + widgetTypeId);
+        Validator.validateId(widgetTypeId, INCORRECT_WIDGET_TYPE_ID + widgetTypeId);
         return widgetTypeDao.findWidgetTypeById(tenantId, widgetTypeId.getId());
     }
 
     @Override
     public WidgetTypeDetails findWidgetTypeDetailsById(TenantId tenantId, WidgetTypeId widgetTypeId) {
         log.trace("Executing findWidgetTypeDetailsById [{}]", widgetTypeId);
-        Validator.validateId(widgetTypeId, "Incorrect widgetTypeId " + widgetTypeId);
+        Validator.validateId(widgetTypeId, INCORRECT_WIDGET_TYPE_ID + widgetTypeId);
         return widgetTypeDao.findById(tenantId, widgetTypeId.getId());
     }
 
@@ -64,7 +63,7 @@ public class WidgetTypeServiceImpl implements WidgetTypeService {
     @Override
     public void deleteWidgetType(TenantId tenantId, WidgetTypeId widgetTypeId) {
         log.trace("Executing deleteWidgetType [{}]", widgetTypeId);
-        Validator.validateId(widgetTypeId, "Incorrect widgetTypeId " + widgetTypeId);
+        Validator.validateId(widgetTypeId, INCORRECT_WIDGET_TYPE_ID + widgetTypeId);
         widgetTypeDao.removeById(tenantId, widgetTypeId.getId());
     }
 
@@ -97,7 +96,7 @@ public class WidgetTypeServiceImpl implements WidgetTypeService {
         log.trace("Executing findWidgetTypeByTenantIdBundleAliasAndAlias, tenantId [{}], bundleAlias [{}], alias [{}]", tenantId, bundleAlias, alias);
         Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         Validator.validateString(bundleAlias, INCORRECT_BUNDLE_ALIAS + bundleAlias);
-        Validator.validateString(alias, "Incorrect alias " + alias);
+        Validator.validateString(alias, INCORRECT_ALIAS + alias);
         return widgetTypeDao.findByTenantIdBundleAliasAndAlias(tenantId.getId(), bundleAlias, alias);
     }
 

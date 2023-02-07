@@ -313,14 +313,4 @@ public class AuthController extends BaseController {
             throw handleException(e);
         }
     }
-
-    private void logLogoutAction(HttpServletRequest request) throws ThingsboardException {
-        try {
-            var user = getCurrentUser();
-            systemSecurityService.logLoginAction(user, new RestAuthenticationDetails(request), ActionType.LOGOUT, null);
-            eventPublisher.publishEvent(new UserSessionInvalidationEvent(user.getSessionId()));
-        } catch (Exception e) {
-            throw handleException(e);
-        }
-    }
 }

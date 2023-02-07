@@ -43,11 +43,7 @@ import org.thingsboard.server.service.security.permission.Operation;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.thingsboard.server.controller.ControllerConstants.ENTITY_ID_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.ENTITY_TYPE_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RELATION_INFO_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RELATION_TYPE_GROUP_PARAM_DESCRIPTION;
-import static org.thingsboard.server.controller.ControllerConstants.RELATION_TYPE_PARAM_DESCRIPTION;
+import static org.thingsboard.server.controller.ControllerConstants.*;
 
 @RestController
 @TbCoreComponent
@@ -56,12 +52,6 @@ import static org.thingsboard.server.controller.ControllerConstants.RELATION_TYP
 public class EntityRelationController extends BaseController {
 
     private final TbEntityRelationService tbEntityRelationService;
-
-    public static final String TO_TYPE = "toType";
-    public static final String FROM_ID = "fromId";
-    public static final String FROM_TYPE = "fromType";
-    public static final String RELATION_TYPE = "relationType";
-    public static final String TO_ID = "toId";
 
     private static final String SECURITY_CHECKS_ENTITIES_DESCRIPTION = "\n\nIf the user has the authority of 'System Administrator', the server checks that 'from' and 'to' entities are owned by the sysadmin. " +
             "If the user has the authority of 'Tenant Administrator', the server checks that 'from' and 'to' entities are owned by the same tenant. " +
@@ -350,31 +340,8 @@ public class EntityRelationController extends BaseController {
         }
     }
 
-    private <T extends EntityRelation> List<T> filterRelationsByReadPermission(List<T> relationsByQuery) {
-        return relationsByQuery.stream().filter(relationByQuery -> {
-            try {
-                checkEntityId(relationByQuery.getTo(), Operation.READ);
-            } catch (ThingsboardException e) {
-                return false;
-            }
-            try {
-                checkEntityId(relationByQuery.getFrom(), Operation.READ);
-            } catch (ThingsboardException e) {
-                return false;
-            }
-            return true;
-        }).collect(Collectors.toList());
-    }
 
-    private RelationTypeGroup parseRelationTypeGroup(String strRelationTypeGroup, RelationTypeGroup defaultValue) {
-        RelationTypeGroup result = defaultValue;
-        if (strRelationTypeGroup != null && strRelationTypeGroup.trim().length() > 0) {
-            try {
-                result = RelationTypeGroup.valueOf(strRelationTypeGroup);
-            } catch (IllegalArgumentException e) {
-            }
-        }
-        return result;
-    }
+
+
 
 }

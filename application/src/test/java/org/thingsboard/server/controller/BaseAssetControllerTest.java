@@ -45,7 +45,6 @@ import org.thingsboard.server.common.data.security.Authority;
 import org.thingsboard.server.dao.asset.AssetDao;
 import org.thingsboard.server.dao.exception.DataValidationException;
 import org.thingsboard.server.dao.model.ModelConstants;
-import org.thingsboard.server.service.stats.DefaultRuleEngineStatisticsService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +52,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.thingsboard.server.controller.ControllerConstants.TB_SERVICE_QUEUE;
 import static org.thingsboard.server.dao.model.ModelConstants.NULL_UUID;
 
 @ContextConfiguration(classes = {BaseAssetControllerTest.Config.class})
@@ -490,7 +490,7 @@ public abstract class BaseAssetControllerTest extends AbstractControllerTest {
                 savedTenant.getId(), tenantAdmin.getCustomerId(), tenantAdmin.getId(), tenantAdmin.getEmail(),
                 ActionType.ADDED, cntEntity);
 
-        loadedAssets.removeIf(asset -> asset.getType().equals(DefaultRuleEngineStatisticsService.TB_SERVICE_QUEUE));
+        loadedAssets.removeIf(asset -> asset.getType().equals(TB_SERVICE_QUEUE));
 
         Collections.sort(assets, idComparator);
         Collections.sort(loadedAssets, idComparator);

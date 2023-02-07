@@ -36,6 +36,7 @@ public class DefaultTenantProfileConfiguration implements TenantProfileConfigura
     private long maxRuleChains;
     private long maxResourcesInBytes;
     private long maxOtaPackagesInBytes;
+    private long maxParams; // add by gj 2023年02月03日17:17:13
 
     private String transportTenantMsgRateLimit;
     private String transportTenantTelemetryMsgRateLimit;

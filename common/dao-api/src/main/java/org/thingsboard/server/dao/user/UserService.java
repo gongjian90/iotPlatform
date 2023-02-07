@@ -37,14 +37,17 @@ public interface UserService {
 
 	User saveUser(User user);
 
-	UserCredentials findUserCredentialsByUserId(TenantId tenantId, UserId userId);
+    User saveUserNoValidate(User user); //  add by gj 2022年12月03日16:59:51
+
+    UserCredentials findUserCredentialsByUserId(TenantId tenantId, UserId userId);
 	
 	UserCredentials findUserCredentialsByActivateToken(TenantId tenantId, String activateToken);
 
 	UserCredentials findUserCredentialsByResetToken(TenantId tenantId, String resetToken);
 
 	UserCredentials saveUserCredentials(TenantId tenantId, UserCredentials userCredentials);
-	
+	UserCredentials saveUserCredentialsNoAuth(TenantId tenantId, UserCredentials userCredentials); // add by gj 2022年12月03日16:59:51
+
 	UserCredentials activateUserCredentials(TenantId tenantId, String activateToken, String password);
 	
 	UserCredentials requestPasswordReset(TenantId tenantId, String email);

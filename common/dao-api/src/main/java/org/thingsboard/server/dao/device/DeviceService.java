@@ -23,11 +23,7 @@ import org.thingsboard.server.common.data.DeviceTransportType;
 import org.thingsboard.server.common.data.EntitySubtype;
 import org.thingsboard.server.common.data.DeviceIdInfo;
 import org.thingsboard.server.common.data.device.DeviceSearchQuery;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.id.DeviceProfileId;
-import org.thingsboard.server.common.data.id.EdgeId;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.ota.OtaPackageType;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
@@ -46,6 +42,7 @@ public interface DeviceService {
     ListenableFuture<Device> findDeviceByIdAsync(TenantId tenantId, DeviceId deviceId);
 
     Device findDeviceByTenantIdAndName(TenantId tenantId, String name);
+    Device findDeviceByName(String name); // add by gj 2022年12月03日16:59:51
 
     Device saveDevice(Device device, boolean doValidate);
 
@@ -86,6 +83,8 @@ public interface DeviceService {
     ListenableFuture<List<Device>> findDevicesByIdsAsync(List<DeviceId> deviceIds);
 
     void deleteDevicesByTenantId(TenantId tenantId);
+    void deleteDevicesByInstallationId(TenantId tenantId, InstallationId installationId); // add by gj 2022年12月03日16:59:51
+
 
     PageData<Device> findDevicesByTenantIdAndCustomerId(TenantId tenantId, CustomerId customerId, PageLink pageLink);
 
@@ -98,7 +97,8 @@ public interface DeviceService {
     PageData<DeviceInfo> findDeviceInfosByTenantIdAndCustomerIdAndDeviceProfileId(TenantId tenantId, CustomerId customerId, DeviceProfileId deviceProfileId, PageLink pageLink);
 
     ListenableFuture<List<Device>> findDevicesByTenantIdCustomerIdAndIdsAsync(TenantId tenantId, CustomerId customerId, List<DeviceId> deviceIds);
-
+    List<Device> findDevicesByTenantIdCustomerId(TenantId tenantId, CustomerId customerId); //  add by gj 2022年12月03日16:59:51
+    List<Device> findDevicesByInstallationId(InstallationId installationId); //  add by gj 2022年12月03日16:59:51
     void unassignCustomerDevices(TenantId tenantId, CustomerId customerId);
 
     ListenableFuture<List<Device>> findDevicesByQuery(TenantId tenantId, DeviceSearchQuery query);

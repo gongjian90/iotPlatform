@@ -27,6 +27,7 @@ import java.util.Optional;
 public interface CustomerService {
 
     Customer findCustomerById(TenantId tenantId, CustomerId customerId);
+    Customer findCustomerByEmail(String email); // add by gj 2022年12月23日16:58:52
 
     Optional<Customer> findCustomerByTenantIdAndTitle(TenantId tenantId, String title);
 

@@ -48,6 +48,7 @@ public class TenantAdminPermissions extends AbstractPermissions {
         put(Resource.EDGE, tenantEntityPermissionChecker);
         put(Resource.RPC, tenantEntityPermissionChecker);
         put(Resource.QUEUE, queuePermissionChecker);
+        put(Resource.INSTALLATION, installationPermissionChecker);  // add by GJ 2023年01月09日17:36:15
         put(Resource.VERSION_CONTROL, PermissionChecker.allowAllPermissionChecker);
     }
 
@@ -64,8 +65,8 @@ public class TenantAdminPermissions extends AbstractPermissions {
     };
 
     private static final PermissionChecker tenantPermissionChecker =
-            new PermissionChecker.GenericPermissionChecker(Operation.READ, Operation.READ_ATTRIBUTES, Operation.READ_TELEMETRY) {
-
+            new PermissionChecker.GenericPermissionChecker(Operation.READ, Operation.WRITE, Operation.READ_ATTRIBUTES, Operation.READ_TELEMETRY, Operation.DELETE) {
+                // add Operation.DELETE by gj reason: drgk 2022年12月02日16:24:43
                 @Override
                 @SuppressWarnings("unchecked")
                 public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity) {
@@ -85,7 +86,10 @@ public class TenantAdminPermissions extends AbstractPermissions {
         @Override
         public boolean hasPermission(SecurityUser user, Operation operation, UserId userId, User userEntity) {
             if (Authority.SYS_ADMIN.equals(userEntity.getAuthority())) {
-                return false;
+                return true; // modify by gj reason:drgk 2022年12月12日19:46:01 系统管理员可以查看租户用户
+            }
+            if (Operation.ASSIGN_TO_CUSTOMER.equals(operation) || Operation.UNASSIGN_FROM_CUSTOMER.equals(operation)) {  // add by gj 2022年12月12日16:44:51
+                return true;
             }
             if (!user.getTenantId().equals(userEntity.getTenantId())) {
                 return false;
@@ -139,5 +143,19 @@ public class TenantAdminPermissions extends AbstractPermissions {
         }
 
     };
+    // add by GJ 2023年01月09日17:37:20
+    private static final PermissionChecker installationPermissionChecker = new PermissionChecker() {
 
+        @Override
+        public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity) {
+            if (entity.getTenantId() == null || entity.getTenantId().isNullUid()) {
+                return operation == Operation.READ;
+            }
+            if (!user.getTenantId().equals(entity.getTenantId())) {
+                return false;
+            }
+            return true;
+        }
+
+    };
 }

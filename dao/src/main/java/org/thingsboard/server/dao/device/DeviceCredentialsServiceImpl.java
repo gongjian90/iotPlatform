@@ -48,6 +48,8 @@ import org.thingsboard.server.dao.exception.DataValidationException;
 import org.thingsboard.server.dao.exception.DeviceCredentialsValidationException;
 import org.thingsboard.server.dao.service.DataValidator;
 
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_CREDENTIALS_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_DEVICE_ID;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 import static org.thingsboard.server.dao.service.Validator.validateString;
 
@@ -73,14 +75,14 @@ public class DeviceCredentialsServiceImpl extends AbstractCachedEntityService<St
     @Override
     public DeviceCredentials findDeviceCredentialsByDeviceId(TenantId tenantId, DeviceId deviceId) {
         log.trace("Executing findDeviceCredentialsByDeviceId [{}]", deviceId);
-        validateId(deviceId, "Incorrect deviceId " + deviceId);
+        validateId(deviceId, INCORRECT_DEVICE_ID + deviceId);
         return deviceCredentialsDao.findByDeviceId(tenantId, deviceId.getId());
     }
 
     @Override
     public DeviceCredentials findDeviceCredentialsByCredentialsId(String credentialsId) {
         log.trace("Executing findDeviceCredentialsByCredentialsId [{}]", credentialsId);
-        validateString(credentialsId, "Incorrect credentialsId " + credentialsId);
+        validateString(credentialsId, INCORRECT_CREDENTIALS_ID + credentialsId);
         return cache.getAndPutInTransaction(credentialsId,
                 () -> deviceCredentialsDao.findByCredentialsId(TenantId.SYS_TENANT_ID, credentialsId),
                 false);

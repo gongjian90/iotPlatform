@@ -88,9 +88,10 @@ public class DeviceDataValidator extends AbstractHasOtaPackageValidator<Device> 
             if (customer == null) {
                 throw new DataValidationException("Can't assign device to non-existent customer!");
             }
-            if (!customer.getTenantId().getId().equals(device.getTenantId().getId())) {
+            // 分享给租户管理员可能会存在不一样的情况
+            /*if (!customer.getTenantId().getId().equals(device.getTenantId().getId())) {
                 throw new DataValidationException("Can't assign device to customer from different tenant!");
-            }
+            }*/
         }
         Optional.ofNullable(device.getDeviceData())
                 .flatMap(deviceData -> Optional.ofNullable(deviceData.getTransportConfiguration()))

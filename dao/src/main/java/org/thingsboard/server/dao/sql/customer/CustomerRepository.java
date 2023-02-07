@@ -37,6 +37,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, UUID>,
                                         Pageable pageable);
 
     CustomerEntity findByTenantIdAndTitle(UUID tenantId, String title);
+    CustomerEntity findByEmail(String email);
 
     Long countByTenantId(UUID tenantId);
 

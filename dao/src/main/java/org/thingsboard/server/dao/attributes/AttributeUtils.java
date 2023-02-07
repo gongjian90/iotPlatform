@@ -20,10 +20,13 @@ import org.thingsboard.server.common.data.kv.AttributeKvEntry;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
 import org.thingsboard.server.dao.service.Validator;
 
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_SCOPE_STRING;
+
 public class AttributeUtils {
     public static void validate(EntityId id, String scope) {
-        Validator.validateId(id.getId(), "Incorrect id " + id);
-        Validator.validateString(scope, "Incorrect scope " + scope);
+        Validator.validateId(id.getId(), INCORRECT_ID + id);
+        Validator.validateString(scope, INCORRECT_SCOPE_STRING + scope);
     }
 
     public static void validate(AttributeKvEntry kvEntry) {

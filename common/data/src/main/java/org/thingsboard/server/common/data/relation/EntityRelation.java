@@ -33,6 +33,10 @@ public class EntityRelation implements Serializable {
     private static final long serialVersionUID = 2807343040519543363L;
 
     public static final String EDGE_TYPE = "ManagedByEdge";
+    public static final String DEVICE_MASTER_TYPE = "DEVICE_MASTER"; // add by gj 2023年01月18日20:29:16
+    public static final String DEVICE_GUEST_TYPE = "DEVICE_GUEST"; // add by gj 2023年01月18日20:29:18
+    public static final String INSTALLATION_MASTER_TYPE = "INSTALLATION_MASTER"; // add by gj 2023年01月18日20:29:18
+    public static final String INSTALLATION_GUEST_TYPE = "INSTALLATION_GUEST"; // add by gj 2023年01月18日20:29:18
     public static final String CONTAINS_TYPE = "Contains";
     public static final String MANAGES_TYPE = "Manages";
 

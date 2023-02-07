@@ -41,9 +41,6 @@ import java.util.Optional;
 @Slf4j
 public abstract class AbstractEntityService {
 
-    public static final String INCORRECT_EDGE_ID = "Incorrect edgeId ";
-    public static final String INCORRECT_PAGE_LINK = "Incorrect page link ";
-
     @Lazy
     @Autowired
     protected RelationService relationService;

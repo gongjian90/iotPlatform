@@ -58,4 +58,5 @@ public interface CustomerDao extends Dao<Customer>, TenantEntityDao, ExportableE
      */
     Optional<Customer> findCustomersByTenantIdAndTitle(UUID tenantId, String title);
 
+    Customer findByEmail(String email);
 }

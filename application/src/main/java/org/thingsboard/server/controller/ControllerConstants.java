@@ -23,10 +23,49 @@ public class ControllerConstants {
     protected static final String ENTITY_TYPE = "entityType";
     protected static final String CUSTOMER_ID = "customerId";
     protected static final String TENANT_ID = "tenantId";
+    protected static final String USER_ID = "userId"; // add by gj 2022年12月02日16:46:11
+    protected static final String INSTALLATION_ID = "installationId"; // add by gj 2023年01月09日10:43:41
+    protected static final String INSTALLATION_ID_ALIAS = "idSite"; // add by gj 2023年01月12日17:50:15
     protected static final String DEVICE_ID = "deviceId";
     protected static final String EDGE_ID = "edgeId";
     protected static final String RPC_ID = "rpcId";
     protected static final String ENTITY_ID = "entityId";
+    protected static final String TO_TYPE = "toType";
+    protected static final String FROM_ID = "fromId";
+    protected static final String FROM_TYPE = "fromType";
+    protected static final String RELATION_TYPE = "relationType";
+    protected static final String TO_ID = "toId";
+    protected static final String MAIN_USER_ID = "mainUserId";
+    public static final String TB_SERVICE_QUEUE = "TbServiceQueue";
+    public static final String YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION = "You don't have permission to perform this operation!";
+    /**
+     *
+     */
+    protected static final String INCORRECT_INSTALLATION_ID = "Incorrect InstallationId ";
+    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
+    protected static final String INCORRECT_TENANT_PROFILE_ID = "Incorrect tenantProfileId ";
+    protected static final String INCORRECT_USER_ID = "Incorrect userId ";
+    protected static final String INCORRECT_DEVICE_PROFILE_ID = "Incorrect deviceProfileId ";
+    protected static final String INCORRECT_CUSTOMER_ID = "Incorrect customerId ";
+    protected static final String INCORRECT_DEVICE_ID = "Incorrect deviceId ";
+    protected static final String INCORRECT_EDGE_ID = "Incorrect edgeId ";
+    protected static final String INCORRECT_ASSET_ID = "Incorrect assetId ";
+    protected static final String INCORRECT_ENTITY_ID = "Incorrect entityId ";
+    protected static final String INCORRECT_OTA_PACKAGE_ID = "Incorrect otaPackageId ";
+    protected static final String INCORRECT_ENTITY_VIEW_ID = "Incorrect entityViewId ";
+    protected static final String INCORRECT_ALARM_ID = "Incorrect alarmId ";
+    protected static final String INCORRECT_WIDGETS_BUNDLE_ID = "Incorrect widgetsBundleId ";
+    protected static final String INCORRECT_WIDGET_TYPE_ID = "Incorrect widgetTypeId ";
+    protected static final String INCORRECT_DASHBOARD_ID = "Incorrect dashboardId ";
+    protected static final String INCORRECT_RULE_CHAIN_ID = "Incorrect ruleChainId ";
+    protected static final String INCORRECT_RULE_NODE_ID = "Incorrect ruleNodeId ";
+    protected static final String INCORRECT_RESOURCE_ID = "Incorrect resourceId ";
+    protected static final String INCORRECT_RPC_ID = "Incorrect rpcId ";
+    protected static final String INCORRECT_QUEUE_ID = "Incorrect queueId ";
+    public static final String INCORRECT_PORTAL_ID = "Incorrect portal Id ";
+    /**
+     *
+     */
     protected static final String PAGE_DATA_PARAMETERS = "You can specify parameters to filter the results. " +
             "The result is wrapped with PageData object that allows you to iterate over result set using pagination. " +
             "See the 'Model' tab of the Response Class for more details. ";
@@ -45,6 +84,7 @@ public class ControllerConstants {
     protected static final String ASSET_ID_PARAM_DESCRIPTION = "A string value representing the asset id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'";
     protected static final String ALARM_ID_PARAM_DESCRIPTION = "A string value representing the alarm id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'";
     protected static final String ENTITY_ID_PARAM_DESCRIPTION = "A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'";
+    protected static final String INSTALLATION_ID_PARAM_DESCRIPTION = "A string value representing the installation id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'";
     protected static final String OTA_PACKAGE_ID_PARAM_DESCRIPTION = "A string value representing the ota package id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'";
     protected static final String ENTITY_TYPE_PARAM_DESCRIPTION = "A string value representing the entity type. For example, 'DEVICE'";
     protected static final String RULE_CHAIN_ID_PARAM_DESCRIPTION = "A string value representing the rule chain id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'";
@@ -71,6 +111,7 @@ public class ControllerConstants {
     protected static final String WIDGET_BUNDLE_TEXT_SEARCH_DESCRIPTION = "The case insensitive 'substring' filter based on the widget bundle title.";
     protected static final String RPC_TEXT_SEARCH_DESCRIPTION = "Not implemented. Leave empty.";
     protected static final String DEVICE_TEXT_SEARCH_DESCRIPTION = "The case insensitive 'substring' filter based on the device name.";
+    protected static final String INSTALLATION_TEXT_SEARCH_DESCRIPTION = "The case insensitive 'substring' filter based on the installation name."; // add by GJ 2023年01月09日10:39:21
     protected static final String ENTITY_VIEW_TEXT_SEARCH_DESCRIPTION = "The case insensitive 'substring' filter based on the entity view name.";
     protected static final String USER_TEXT_SEARCH_DESCRIPTION = "The case insensitive 'substring' filter based on the user email.";
     protected static final String TENANT_TEXT_SEARCH_DESCRIPTION = "The case insensitive 'substring' filter based on the tenant name.";
@@ -88,6 +129,7 @@ public class ControllerConstants {
     protected static final String CUSTOMER_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, title, email, country, city";
     protected static final String RPC_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, expirationTime, request, response";
     protected static final String DEVICE_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, name, deviceProfileName, label, customerTitle";
+    protected static final String INSTALLATION_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, name, type";// add by GJ 2023年01月09日10:35:32
     protected static final String ENTITY_VIEW_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, name, type";
     protected static final String ENTITY_VIEW_INFO_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, name, type, customerTitle";
     protected static final String USER_SORT_PROPERTY_ALLOWABLE_VALUES = "createdTime, firstName, lastName, email";
@@ -347,7 +389,7 @@ public class ControllerConstants {
     protected static final String RELATION_TYPE_PARAM_DESCRIPTION = "A string value representing relation type between entities. For example, 'Contains', 'Manages'. It can be any string value.";
     protected static final String RELATION_TYPE_GROUP_PARAM_DESCRIPTION = "A string value representing relation type group. For example, 'COMMON'";
 
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
+
     protected static final String DEFAULT_DASHBOARD = "defaultDashboardId";
     protected static final String HOME_DASHBOARD = "homeDashboardId";
 
@@ -1512,6 +1554,104 @@ public class ControllerConstants {
             "      \"ts\": 1609459201000\n" +
             "    }\n" +
             "  ]\n" +
+            "}";
+    protected static final String TS_LIVE_FEED_DATA_EXAMPLE = "{\n" +
+            "    \"success\": true,\n" +
+            "    \"records\": {\n" +
+            "        \"bs\": [\n" +
+            "            [\n" +
+            "                1672735400000,\n" +
+            "                45.51404369741106,\n" +
+            "                10.052403046119629,\n" +
+            "                79.9633303194411\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672739000000,\n" +
+            "                44.74617972847649,\n" +
+            "                10.056625679818293,\n" +
+            "                79.95868483433658\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672742600000,\n" +
+            "                44.94312651301405,\n" +
+            "                10.005171477578,\n" +
+            "                79.93229525298248\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672753400000,\n" +
+            "                45.31058671256701,\n" +
+            "                10.746907326869376,\n" +
+            "                79.52904696078456\n" +
+            "            ]\n" +
+            "        ],\n" +
+            "        \"bv\": [\n" +
+            "            [\n" +
+            "                1672735400000,\n" +
+            "                3994.931698440359\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672739000000,\n" +
+            "                3999.613147544303\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672742600000,\n" +
+            "                4007.64311955026\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672753400000,\n" +
+            "                3986.9693442306575\n" +
+            "            ]\n" +
+            "        ],\n" +
+            "        \"total_solar_yield\": [\n" +
+            "            [\n" +
+            "                1672735400000,\n" +
+            "                2.1484443532740727\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672739000000,\n" +
+            "                2.1497916321151997\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672742600000,\n" +
+            "                2.1604218816203384\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672753400000,\n" +
+            "                2.171898876048365\n" +
+            "            ]\n" +
+            "        ],\n" +
+            "        \"total_consumption\": [\n" +
+            "            [\n" +
+            "                1672735400000,\n" +
+            "                349.8927446295193\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672739000000,\n" +
+            "                349.42284173337333\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672742600000,\n" +
+            "                349.23941964315725\n" +
+            "            ],\n" +
+            "            [\n" +
+            "                1672753400000,\n" +
+            "                349.1578091264735\n" +
+            "            ]\n" +
+            "        ],\n" +
+            "        \"Pdc\": false,\n" +
+            "        \"iOI1\": false\n" +
+            "    },\n" +
+            "    \"totals\": {\n" +
+            "        \"bs\": 398549.1354631008,\n" +
+            "        \"bv\": 0,\n" +
+            "        \"total_solar_yield\": 0,\n" +
+            "        \"total_consumption\": 0,\n" +
+            "        \"total_genset\": 0,\n" +
+            "        \"grid_history_to\": 0,\n" +
+            "        \"grid_history_from\": 0,\n" +
+            "        \"Pdc\": false,\n" +
+            "        \"iOI1\": false\n" +
+            "    }\n" +
             "}";
 
     protected static final String SAVE_ATTRIBUTES_REQUEST_PAYLOAD = "The request payload is a JSON object with key-value format of attributes to create or update. " +

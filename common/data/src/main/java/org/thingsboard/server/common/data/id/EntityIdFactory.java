@@ -81,6 +81,8 @@ public class EntityIdFactory {
                 return new RpcId(uuid);
             case QUEUE:
                 return new QueueId(uuid);
+            case INSTALLATION:  // add by GJ 2023年01月09日15:15:10
+                return new InstallationId(uuid);
         }
         throw new IllegalArgumentException("EntityType " + type + " is not supported!");
     }

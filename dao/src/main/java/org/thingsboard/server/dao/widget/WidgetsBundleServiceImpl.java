@@ -32,13 +32,14 @@ import org.thingsboard.server.dao.service.Validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
+
 @Service
 @Slf4j
 public class WidgetsBundleServiceImpl implements WidgetsBundleService {
 
     private static final int DEFAULT_WIDGETS_BUNDLE_LIMIT = 300;
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    public static final String INCORRECT_PAGE_LINK = "Incorrect page link ";
+
 
     @Autowired
     private WidgetsBundleDao widgetsBundleDao;
@@ -52,7 +53,7 @@ public class WidgetsBundleServiceImpl implements WidgetsBundleService {
     @Override
     public WidgetsBundle findWidgetsBundleById(TenantId tenantId, WidgetsBundleId widgetsBundleId) {
         log.trace("Executing findWidgetsBundleById [{}]", widgetsBundleId);
-        Validator.validateId(widgetsBundleId, "Incorrect widgetsBundleId " + widgetsBundleId);
+        Validator.validateId(widgetsBundleId, INCORRECT_WIDGETS_BUNDLE_ID + widgetsBundleId);
         return widgetsBundleDao.findById(tenantId, widgetsBundleId.getId());
     }
 
@@ -71,7 +72,7 @@ public class WidgetsBundleServiceImpl implements WidgetsBundleService {
     @Override
     public void deleteWidgetsBundle(TenantId tenantId, WidgetsBundleId widgetsBundleId) {
         log.trace("Executing deleteWidgetsBundle [{}]", widgetsBundleId);
-        Validator.validateId(widgetsBundleId, "Incorrect widgetsBundleId " + widgetsBundleId);
+        Validator.validateId(widgetsBundleId, INCORRECT_WIDGETS_BUNDLE_ID + widgetsBundleId);
         WidgetsBundle widgetsBundle = findWidgetsBundleById(tenantId, widgetsBundleId);
         if (widgetsBundle == null) {
             throw new IncorrectParameterException("Unable to delete non-existent widgets bundle.");
@@ -84,7 +85,7 @@ public class WidgetsBundleServiceImpl implements WidgetsBundleService {
     public WidgetsBundle findWidgetsBundleByTenantIdAndAlias(TenantId tenantId, String alias) {
         log.trace("Executing findWidgetsBundleByTenantIdAndAlias, tenantId [{}], alias [{}]", tenantId, alias);
         Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        Validator.validateString(alias, "Incorrect alias " + alias);
+        Validator.validateString(alias, INCORRECT_ALIAS + alias);
         return widgetsBundleDao.findWidgetsBundleByTenantIdAndAlias(tenantId.getId(), alias);
     }
 

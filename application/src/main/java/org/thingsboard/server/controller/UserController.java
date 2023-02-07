@@ -76,6 +76,7 @@ import static org.thingsboard.server.controller.ControllerConstants.USER_ID_PARA
 import static org.thingsboard.server.controller.ControllerConstants.USER_SORT_PROPERTY_ALLOWABLE_VALUES;
 import static org.thingsboard.server.controller.ControllerConstants.USER_TEXT_SEARCH_DESCRIPTION;
 import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LINK;
+import static org.thingsboard.server.controller.ControllerConstants.YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION;
 
 @RequiredArgsConstructor
 @RestController
@@ -84,18 +85,11 @@ import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LI
 public class UserController extends BaseController {
 
     public static final String USER_ID = "userId";
-    public static final String YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION = "You don't have permission to perform this operation!";
     public static final String ACTIVATE_URL_PATTERN = "%s/api/noauth/activate?activateToken=%s";
 
     @Value("${security.user_token_access_enabled}")
     @Getter
     private boolean userTokenAccessEnabled;
-
-    private final MailService mailService;
-    private final JwtTokenFactory tokenFactory;
-    private final SystemSecurityService systemSecurityService;
-    private final ApplicationEventPublisher eventPublisher;
-    private final TbUserService tbUserService;
 
     @ApiOperation(value = "Get User (getUserById)",
             notes = "Fetch the User object based on the provided User Id. " +

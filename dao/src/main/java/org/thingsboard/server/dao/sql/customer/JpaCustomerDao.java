@@ -69,6 +69,11 @@ public class JpaCustomerDao extends JpaAbstractSearchTextDao<CustomerEntity, Cus
     }
 
     @Override
+    public Customer findByEmail(String email) {
+        return DaoUtil.getData(customerRepository.findByEmail(email));
+    }
+
+    @Override
     public Long countByTenantId(TenantId tenantId) {
         return customerRepository.countByTenantId(tenantId.getId());
     }

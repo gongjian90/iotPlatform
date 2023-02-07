@@ -28,7 +28,7 @@ public class BaseAttributeKvEntry implements AttributeKvEntry {
     private final long lastUpdateTs;
     @Valid
     private final KvEntry kv;
-
+    private Aggregation aggregation;
     public BaseAttributeKvEntry(KvEntry kv, long lastUpdateTs) {
         this.kv = kv;
         this.lastUpdateTs = lastUpdateTs;
@@ -113,5 +113,15 @@ public class BaseAttributeKvEntry implements AttributeKvEntry {
                 "lastUpdateTs=" + lastUpdateTs +
                 ", kv=" + kv +
                 '}';
+    }
+
+    @Override
+    public void setAggregation(Aggregation aggregation) {
+        this.aggregation = aggregation;
+    }
+
+    @Override
+    public Aggregation getAggregation() {
+        return this.aggregation;
     }
 }

@@ -32,6 +32,8 @@ import org.thingsboard.server.dao.tenant.TenantService;
 
 import java.util.Optional;
 
+import static org.thingsboard.server.dao.model.ModelConstants.PUBLIC_CUSTOMER_TITLE;
+
 @Component
 public class CustomerDataValidator extends DataValidator<Customer> {
 
@@ -77,7 +79,7 @@ public class CustomerDataValidator extends DataValidator<Customer> {
         if (StringUtils.isEmpty(customer.getTitle())) {
             throw new DataValidationException("Customer title should be specified!");
         }
-        if (customer.getTitle().equals(CustomerServiceImpl.PUBLIC_CUSTOMER_TITLE)) {
+        if (customer.getTitle().equals(PUBLIC_CUSTOMER_TITLE)) {
             throw new DataValidationException("'Public' title for customer is system reserved!");
         }
         if (!StringUtils.isEmpty(customer.getEmail())) {

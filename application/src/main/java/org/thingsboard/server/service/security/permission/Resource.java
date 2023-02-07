@@ -43,6 +43,7 @@ public enum Resource {
     EDGE(EntityType.EDGE),
     RPC(EntityType.RPC),
     QUEUE(EntityType.QUEUE),
+    INSTALLATION(EntityType.INSTALLATION), // add by GJ 2023年01月08日17:59:43
     VERSION_CONTROL;
 
     private final EntityType entityType;

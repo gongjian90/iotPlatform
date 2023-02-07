@@ -43,12 +43,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static org.thingsboard.server.controller.ControllerConstants.TB_SERVICE_QUEUE;
+
 @TbRuleEngineComponent
 @Service
 @Slf4j
 public class DefaultRuleEngineStatisticsService implements RuleEngineStatisticsService {
 
-    public static final String TB_SERVICE_QUEUE = "TbServiceQueue";
     public static final FutureCallback<Integer> CALLBACK = new FutureCallback<Integer>() {
         @Override
         public void onSuccess(@Nullable Integer result) {

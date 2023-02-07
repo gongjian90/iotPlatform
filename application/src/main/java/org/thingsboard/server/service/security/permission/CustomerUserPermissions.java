@@ -59,7 +59,7 @@ public class CustomerUserPermissions extends AbstractPermissions {
         }
     };
 
-    private static final PermissionChecker customerEntityPermissionChecker =
+    /*private static final PermissionChecker customerEntityPermissionChecker =
             new PermissionChecker.GenericPermissionChecker(Operation.READ, Operation.READ_CREDENTIALS,
                     Operation.READ_ATTRIBUTES, Operation.READ_TELEMETRY, Operation.RPC_CALL, Operation.CLAIM_DEVICES,
                     Operation.WRITE, Operation.WRITE_ATTRIBUTES, Operation.WRITE_TELEMETRY) {
@@ -79,11 +79,29 @@ public class CustomerUserPermissions extends AbstractPermissions {
                     }
                     return operation.equals(Operation.CLAIM_DEVICES) || user.getCustomerId().equals(((HasCustomerId) entity).getCustomerId());
                 }
-            };
+            };*/
+    // modify by gj reason: drgk 2022年12月03日15:37:42
+    private static final PermissionChecker customerEntityPermissionChecker = new PermissionChecker() {
+
+        @Override
+        public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity) {
+            if (Operation.ASSIGN_TO_CUSTOMER.equals(operation) || Operation.UNASSIGN_FROM_CUSTOMER.equals(operation)) {
+                return true;
+            }
+            if (!user.getTenantId().equals(entity.getTenantId())) {
+                return false;
+            }
+            if (!(entity instanceof HasCustomerId)) {
+                return false;
+            }
+            return operation.equals(Operation.CLAIM_DEVICES) || user.getCustomerId().equals(((HasCustomerId) entity).getCustomerId());
+        }
+    };
 
     private static final PermissionChecker customerPermissionChecker =
-            new PermissionChecker.GenericPermissionChecker(Operation.READ, Operation.READ_ATTRIBUTES, Operation.READ_TELEMETRY) {
-
+            new PermissionChecker.GenericPermissionChecker(Operation.READ, Operation.WRITE, Operation.READ_ATTRIBUTES, Operation.READ_TELEMETRY, Operation.DELETE) {
+                // add Operation.DELETE by gj reason: drgk 2022年12月03日14:51:04
+                // add Operation.WRITE by gj reason:drgk 2023年01月19日10:32:37
                 @Override
                 @SuppressWarnings("unchecked")
                 public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity) {
@@ -116,6 +134,9 @@ public class CustomerUserPermissions extends AbstractPermissions {
 
         @Override
         public boolean hasPermission(SecurityUser user, Operation operation, UserId userId, User userEntity) {
+            if (Operation.ASSIGN_TO_CUSTOMER.equals(operation) || Operation.UNASSIGN_FROM_CUSTOMER.equals(operation)) { // add by gj 2022年12月12日16:43:35
+                return true;
+            }
             if (!Authority.CUSTOMER_USER.equals(userEntity.getAuthority())) {
                 return false;
             }

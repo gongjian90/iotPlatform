@@ -25,11 +25,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.thingsboard.server.common.data.device.data.DeviceData;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.id.DeviceProfileId;
-import org.thingsboard.server.common.data.id.OtaPackageId;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.validation.Length;
 import org.thingsboard.server.common.data.validation.NoXss;
 
@@ -62,7 +58,7 @@ public class Device extends SearchTextBasedWithAdditionalInfo<DeviceId> implemen
 
     private OtaPackageId firmwareId;
     private OtaPackageId softwareId;
-
+    private InstallationId installationId; // add by gj 2023年01月08日22:00:52
     @Getter @Setter
     private DeviceId externalId;
 
@@ -86,6 +82,7 @@ public class Device extends SearchTextBasedWithAdditionalInfo<DeviceId> implemen
         this.firmwareId = device.getFirmwareId();
         this.softwareId = device.getSoftwareId();
         this.externalId = device.getExternalId();
+        this.installationId = device.getInstallationId();
     }
 
     public Device updateDevice(Device device) {
@@ -100,6 +97,7 @@ public class Device extends SearchTextBasedWithAdditionalInfo<DeviceId> implemen
         this.setSoftwareId(device.getSoftwareId());
         Optional.ofNullable(device.getAdditionalInfo()).ifPresent(this::setAdditionalInfo);
         this.setExternalId(device.getExternalId());
+        this.installationId = device.getInstallationId();
         return this;
     }
 
@@ -134,6 +132,15 @@ public class Device extends SearchTextBasedWithAdditionalInfo<DeviceId> implemen
 
     public void setCustomerId(CustomerId customerId) {
         this.customerId = customerId;
+    }
+
+    @ApiModelProperty(position = 13, value = "JSON object with Installation Id.", accessMode = ApiModelProperty.AccessMode.READ_ONLY)
+    public InstallationId getInstallationId() {
+        return installationId;
+    }
+
+    public void setInstallationId(InstallationId installationId) {
+        this.installationId = installationId;
     }
 
     @ApiModelProperty(position = 5, required = true, value = "Unique Device Name in scope of Tenant", example = "A4B72CCDFF33")
@@ -246,9 +253,9 @@ public class Device extends SearchTextBasedWithAdditionalInfo<DeviceId> implemen
         builder.append(", deviceProfileId=");
         builder.append(deviceProfileId);
         builder.append(", deviceData=");
-        builder.append(firmwareId);
+        builder.append(deviceData);  // add by GJ
         builder.append(", firmwareId=");
-        builder.append(deviceData);
+        builder.append(firmwareId);
         builder.append(", additionalInfo=");
         builder.append(getAdditionalInfo());
         builder.append(", createdTime=");

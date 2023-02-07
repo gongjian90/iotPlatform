@@ -36,6 +36,9 @@ public interface TenantRepository extends JpaRepository<TenantEntity, UUID> {
             "LEFT JOIN TenantProfileEntity p on p.id = t.tenantProfileId " +
             "WHERE t.id = :tenantId")
     TenantInfoEntity findTenantInfoById(@Param("tenantId") UUID tenantId);
+    @Query("SELECT t FROM TenantEntity t " +
+            "WHERE t.email = :email")
+    TenantEntity findTenantByEmail(@Param("email") String email);
 
     @Query("SELECT t FROM TenantEntity t WHERE LOWER(t.searchText) LIKE LOWER(CONCAT('%', :textSearch, '%'))")
     Page<TenantEntity> findTenantsNextPage(@Param("textSearch") String textSearch,

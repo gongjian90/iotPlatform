@@ -67,9 +67,6 @@ public class TenantController extends BaseController {
 
     private static final String TENANT_INFO_DESCRIPTION = "The Tenant Info object extends regular Tenant object and includes Tenant Profile name. ";
 
-    private final TenantService tenantService;
-    private final TbTenantService tbTenantService;
-
     @ApiOperation(value = "Get Tenant (getTenantById)",
             notes = "Fetch the Tenant object based on the provided Tenant Id. " + SYSTEM_OR_TENANT_AUTHORITY_PARAGRAPH)
     @PreAuthorize("hasAnyAuthority('SYS_ADMIN', 'TENANT_ADMIN')")

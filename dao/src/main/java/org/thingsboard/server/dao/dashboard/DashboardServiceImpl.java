@@ -43,14 +43,14 @@ import org.thingsboard.server.dao.service.Validator;
 
 import java.util.List;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Service
 @Slf4j
 public class DashboardServiceImpl extends AbstractEntityService implements DashboardService {
 
-    public static final String INCORRECT_DASHBOARD_ID = "Incorrect dashboardId ";
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
+
     @Autowired
     private DashboardDao dashboardDao;
 
@@ -203,7 +203,7 @@ public class DashboardServiceImpl extends AbstractEntityService implements Dashb
     public PageData<DashboardInfo> findDashboardsByTenantIdAndCustomerId(TenantId tenantId, CustomerId customerId, PageLink pageLink) {
         log.trace("Executing findDashboardsByTenantIdAndCustomerId, tenantId [{}], customerId [{}], pageLink [{}]", tenantId, customerId, pageLink);
         Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        Validator.validateId(customerId, "Incorrect customerId " + customerId);
+        Validator.validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         Validator.validatePageLink(pageLink);
         return dashboardInfoDao.findDashboardsByTenantIdAndCustomerId(tenantId.getId(), customerId.getId(), pageLink);
     }
@@ -212,7 +212,7 @@ public class DashboardServiceImpl extends AbstractEntityService implements Dashb
     public PageData<DashboardInfo> findMobileDashboardsByTenantIdAndCustomerId(TenantId tenantId, CustomerId customerId, PageLink pageLink) {
         log.trace("Executing findMobileDashboardsByTenantIdAndCustomerId, tenantId [{}], customerId [{}], pageLink [{}]", tenantId, customerId, pageLink);
         Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        Validator.validateId(customerId, "Incorrect customerId " + customerId);
+        Validator.validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         Validator.validatePageLink(pageLink);
         return dashboardInfoDao.findMobileDashboardsByTenantIdAndCustomerId(tenantId.getId(), customerId.getId(), pageLink);
     }
@@ -220,7 +220,7 @@ public class DashboardServiceImpl extends AbstractEntityService implements Dashb
     @Override
     public void unassignCustomerDashboards(TenantId tenantId, CustomerId customerId) {
         log.trace("Executing unassignCustomerDashboards, customerId [{}]", customerId);
-        Validator.validateId(customerId, "Incorrect customerId " + customerId);
+        Validator.validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         Customer customer = customerDao.findById(tenantId, customerId.getId());
         if (customer == null) {
             throw new DataValidationException("Can't unassign dashboards from non-existent customer!");
@@ -231,7 +231,7 @@ public class DashboardServiceImpl extends AbstractEntityService implements Dashb
     @Override
     public void updateCustomerDashboards(TenantId tenantId, CustomerId customerId) {
         log.trace("Executing updateCustomerDashboards, customerId [{}]", customerId);
-        Validator.validateId(customerId, "Incorrect customerId " + customerId);
+        Validator.validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         Customer customer = customerDao.findById(tenantId, customerId.getId());
         if (customer == null) {
             throw new DataValidationException("Can't update dashboards for non-existent customer!");

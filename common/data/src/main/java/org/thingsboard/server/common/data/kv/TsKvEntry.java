@@ -35,5 +35,6 @@ public interface TsKvEntry extends KvEntry {
     default TsValue toTsValue() {
         return new TsValue(getTs(), getValueAsString());
     }
-
+    @JsonIgnore
+    Aggregation getAggregation();
 }

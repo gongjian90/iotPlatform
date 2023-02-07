@@ -67,13 +67,13 @@ import java.util.stream.Stream;
 
 import static org.thingsboard.server.dao.service.Validator.validateEntityDataPageLink;
 import static org.thingsboard.server.dao.service.Validator.validateId;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_ALARM_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_TENANT_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_CUSTOMER_ID;
 
 @Service
 @Slf4j
 public class BaseAlarmService extends AbstractEntityService implements AlarmService {
-
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    public static final String INCORRECT_CUSTOMER_ID = "Incorrect customerId ";
 
     @Autowired
     private AlarmDao alarmDao;
@@ -273,14 +273,14 @@ public class BaseAlarmService extends AbstractEntityService implements AlarmServ
     @Override
     public ListenableFuture<Alarm> findAlarmByIdAsync(TenantId tenantId, AlarmId alarmId) {
         log.trace("Executing findAlarmByIdAsync [{}]", alarmId);
-        validateId(alarmId, "Incorrect alarmId " + alarmId);
+        validateId(alarmId, INCORRECT_ALARM_ID + alarmId);
         return alarmDao.findAlarmByIdAsync(tenantId, alarmId.getId());
     }
 
     @Override
     public ListenableFuture<AlarmInfo> findAlarmInfoByIdAsync(TenantId tenantId, AlarmId alarmId) {
         log.trace("Executing findAlarmInfoByIdAsync [{}]", alarmId);
-        validateId(alarmId, "Incorrect alarmId " + alarmId);
+        validateId(alarmId, INCORRECT_ALARM_ID + alarmId);
         return Futures.transformAsync(alarmDao.findAlarmByIdAsync(tenantId, alarmId.getId()),
                 a -> {
                     AlarmInfo alarmInfo = new AlarmInfo(a);

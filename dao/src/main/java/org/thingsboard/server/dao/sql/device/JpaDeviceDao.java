@@ -175,6 +175,36 @@ public class JpaDeviceDao extends JpaAbstractSearchTextDao<DeviceEntity, Device>
     }
 
     @Override
+    public Optional<Device> findDeviceByName(String name) {
+        Device device = DaoUtil.getData(deviceRepository.findByName(name));
+        return Optional.ofNullable(device);
+    }
+
+    @Override
+    public PageData<Device> findDevicesByCustomerId(UUID customerId, PageLink pageLink) {
+        return DaoUtil.toPageData(
+                deviceRepository.findByCustomerId(
+                        customerId,
+                        Objects.toString(pageLink.getTextSearch(), ""),
+                        DaoUtil.toPageable(pageLink)));
+    }
+    @Override
+    public PageData<Device> findDevicesByInstallationId(UUID installationId, PageLink pageLink) {
+        return DaoUtil.toPageData(
+                deviceRepository.findByInstallationId(
+                        installationId,
+                        Objects.toString(pageLink.getTextSearch(), ""),
+                        DaoUtil.toPageable(pageLink)));
+    }
+    @Override
+    public List<Device> findDevicesByTenantIdCustomerId(UUID tenantId, UUID customerId) {
+        return DaoUtil.convertDataList(deviceRepository.findDevicesByTenantIdAndCustomerId(tenantId, customerId));
+    }
+    @Override
+    public List<Device> findDevicesByInstallationId(UUID installationId) {
+        return DaoUtil.convertDataList(deviceRepository.findDevicesByInstallationId(installationId));
+    }
+    @Override
     public PageData<Device> findDevicesByTenantIdAndType(UUID tenantId, String type, PageLink pageLink) {
         return DaoUtil.toPageData(
                 deviceRepository.findByTenantIdAndType(

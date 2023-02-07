@@ -29,18 +29,7 @@ import org.springframework.stereotype.Service;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.cache.ota.OtaPackageDataCache;
 import org.thingsboard.server.cluster.TbClusterService;
-import org.thingsboard.server.common.data.ApiUsageState;
-import org.thingsboard.server.common.data.DataConstants;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.DeviceTransportType;
-import org.thingsboard.server.common.data.EntityType;
-import org.thingsboard.server.common.data.OtaPackage;
-import org.thingsboard.server.common.data.OtaPackageInfo;
-import org.thingsboard.server.common.data.ResourceType;
-import org.thingsboard.server.common.data.StringUtils;
-import org.thingsboard.server.common.data.TbResource;
-import org.thingsboard.server.common.data.TenantProfile;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.device.credentials.BasicMqttCredentials;
 import org.thingsboard.server.common.data.device.credentials.ProvisionDeviceCredentialsData;
 import org.thingsboard.server.common.data.device.data.CoapDeviceTransportConfiguration;
@@ -48,6 +37,8 @@ import org.thingsboard.server.common.data.device.data.Lwm2mDeviceTransportConfig
 import org.thingsboard.server.common.data.device.data.PowerMode;
 import org.thingsboard.server.common.data.device.data.PowerSavingConfiguration;
 import org.thingsboard.server.common.data.device.profile.ProvisionDeviceProfileCredentials;
+import org.thingsboard.server.common.data.exception.ThingsboardErrorCode;
+import org.thingsboard.server.common.data.exception.ThingsboardException;
 import org.thingsboard.server.common.data.id.CustomerId;
 import org.thingsboard.server.common.data.id.DeviceId;
 import org.thingsboard.server.common.data.id.DeviceProfileId;
@@ -65,6 +56,7 @@ import org.thingsboard.server.common.msg.EncryptionUtil;
 import org.thingsboard.server.common.msg.TbMsg;
 import org.thingsboard.server.common.msg.TbMsgDataType;
 import org.thingsboard.server.common.msg.TbMsgMetaData;
+import org.thingsboard.server.dao.installation.InstallationService;
 import org.thingsboard.server.queue.util.DataDecodingEncodingService;
 import org.thingsboard.server.dao.device.DeviceCredentialsService;
 import org.thingsboard.server.dao.device.DeviceProvisionService;
@@ -110,6 +102,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
+import static org.thingsboard.server.controller.ControllerConstants.INCORRECT_PORTAL_ID;
 import static org.thingsboard.server.service.transport.BasicCredentialsValidationResult.PASSWORD_MISMATCH;
 import static org.thingsboard.server.service.transport.BasicCredentialsValidationResult.VALID;
 
@@ -138,6 +131,7 @@ public class DefaultTransportApiService implements TransportApiService {
     private final OtaPackageService otaPackageService;
     private final OtaPackageDataCache otaPackageDataCache;
     private final QueueService queueService;
+    private final InstallationService installationService;
 
     private final ConcurrentMap<String, ReentrantLock> deviceCreationLocks = new ConcurrentHashMap<>();
 
@@ -274,6 +268,11 @@ public class DefaultTransportApiService implements TransportApiService {
         return VALID;
     }
 
+    /**
+     * 网关通道
+     * @param requestMsg
+     * @return
+     */
     private ListenableFuture<TransportApiResponseMsg> handle(GetOrCreateDeviceFromGatewayRequestMsg requestMsg) {
         DeviceId gatewayId = new DeviceId(new UUID(requestMsg.getGatewayIdMSB(), requestMsg.getGatewayIdLSB()));
         ListenableFuture<Device> gatewayFuture = deviceService.findDeviceByIdAsync(TenantId.SYS_TENANT_ID, gatewayId);
@@ -281,8 +280,18 @@ public class DefaultTransportApiService implements TransportApiService {
             Lock deviceCreationLock = deviceCreationLocks.computeIfAbsent(requestMsg.getDeviceName(), id -> new ReentrantLock());
             deviceCreationLock.lock();
             try {
-                Device device = deviceService.findDeviceByTenantIdAndName(gateway.getTenantId(), requestMsg.getDeviceName());
+                // modify by gj reason:drgk 2022年12月29日17:26:42
+                //Device device = deviceService.findDeviceByTenantIdAndName(gateway.getTenantId(), requestMsg.getDeviceName());
+                Device device = deviceService.findDeviceByName(requestMsg.getDeviceName());
                 if (device == null) {
+                    // add by gj reason:drgk 2023年01月09日16:22:04
+                    String portalId = StringUtils.subStringFromSquareBrackets(requestMsg.getDeviceName());
+                    List<String> squareBrackets = StringUtils.matchStringInSquareBrackets(requestMsg.getDeviceName());
+                    Installation installation = installationService.findInstallationByPortalId(TenantId.SYS_TENANT_ID, portalId);
+                    if (installation == null) {
+                        // 系统目前不支持自动创建Installation，因为无法获取到customer或tenant信息
+                        throw new ThingsboardException(INCORRECT_PORTAL_ID, ThingsboardErrorCode.BAD_REQUEST_PARAMS);
+                    }
                     TenantId tenantId = gateway.getTenantId();
                     device = new Device();
                     device.setTenantId(tenantId);
@@ -293,7 +302,15 @@ public class DefaultTransportApiService implements TransportApiService {
                     device.setDeviceProfileId(deviceProfile.getId());
                     ObjectNode additionalInfo = JacksonUtil.newObjectNode();
                     additionalInfo.put(DataConstants.LAST_CONNECTED_GATEWAY, gatewayId.toString());
+                    if (squareBrackets.size() == 1) {
+                        additionalInfo.put(DataConstants.INSTALLATION_INSTANCE, squareBrackets.get(0));
+                    } else if (squareBrackets.size() > 1){
+                        additionalInfo.put(DataConstants.INSTALLATION_INSTANCE, squareBrackets.get(0));
+                        additionalInfo.put(DataConstants.INSTALLATION_PACK, squareBrackets.get(1));
+                    }
+
                     device.setAdditionalInfo(additionalInfo);
+                    device.setInstallationId(installation.getId());
                     Device savedDevice = deviceService.saveDevice(device);
                     tbClusterService.onDeviceUpdated(savedDevice, null);
                     device = savedDevice;
@@ -336,7 +353,7 @@ public class DefaultTransportApiService implements TransportApiService {
                 return TransportApiResponseMsg.newBuilder()
                         .setGetOrCreateDeviceResponseMsg(builder.build())
                         .build();
-            } catch (JsonProcessingException e) {
+            } catch (JsonProcessingException | ThingsboardException e) {
                 log.warn("[{}] Failed to lookup device by gateway id and name: [{}]", gatewayId, requestMsg.getDeviceName(), e);
                 throw new RuntimeException(e);
             } finally {

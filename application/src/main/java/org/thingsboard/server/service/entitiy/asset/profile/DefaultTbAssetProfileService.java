@@ -31,7 +31,7 @@ import org.thingsboard.server.dao.asset.AssetProfileService;
 import org.thingsboard.server.queue.util.TbCoreComponent;
 import org.thingsboard.server.service.entitiy.AbstractTbEntityService;
 
-import static org.thingsboard.server.dao.asset.BaseAssetService.TB_SERVICE_QUEUE;
+import static org.thingsboard.server.controller.ControllerConstants.TB_SERVICE_QUEUE;
 
 @Service
 @TbCoreComponent

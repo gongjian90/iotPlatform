@@ -25,11 +25,7 @@ import org.hibernate.annotations.TypeDefs;
 import org.thingsboard.common.util.JacksonUtil;
 import org.thingsboard.server.common.data.Device;
 import org.thingsboard.server.common.data.device.data.DeviceData;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.id.DeviceProfileId;
-import org.thingsboard.server.common.data.id.OtaPackageId;
-import org.thingsboard.server.common.data.id.TenantId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.dao.model.BaseSqlEntity;
 import org.thingsboard.server.dao.model.ModelConstants;
 import org.thingsboard.server.dao.model.SearchTextEntity;
@@ -87,6 +83,9 @@ public abstract class AbstractDeviceEntity<T extends Device> extends BaseSqlEnti
     @Column(name = ModelConstants.EXTERNAL_ID_PROPERTY, columnDefinition = "uuid")
     private UUID externalId;
 
+    @Column(name = ModelConstants.DEVICE_INSTALLATION_ID_PROPERTY, columnDefinition = "uuid")
+    private UUID installationId; // add by gj 2023年01月08日22:04:35
+
     public AbstractDeviceEntity() {
         super();
     }
@@ -119,6 +118,9 @@ public abstract class AbstractDeviceEntity<T extends Device> extends BaseSqlEnti
         if (device.getExternalId() != null) {
             this.externalId = device.getExternalId().getId();
         }
+        if (device.getInstallationId() != null) {
+            this.installationId = device.getInstallationId().getId();
+        }
     }
 
     public AbstractDeviceEntity(DeviceEntity deviceEntity) {
@@ -136,6 +138,7 @@ public abstract class AbstractDeviceEntity<T extends Device> extends BaseSqlEnti
         this.firmwareId = deviceEntity.getFirmwareId();
         this.softwareId = deviceEntity.getSoftwareId();
         this.externalId = deviceEntity.getExternalId();
+        this.installationId = deviceEntity.getInstallationId();
     }
 
     @Override
@@ -173,6 +176,9 @@ public abstract class AbstractDeviceEntity<T extends Device> extends BaseSqlEnti
         device.setAdditionalInfo(additionalInfo);
         if (externalId != null) {
             device.setExternalId(new DeviceId(externalId));
+        }
+        if (installationId != null) {
+            device.setInstallationId(new InstallationId(installationId));
         }
         return device;
     }

@@ -63,8 +63,6 @@ import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LI
 @RequestMapping("/api")
 public class CustomerController extends BaseController {
 
-    private final TbCustomerService tbCustomerService;
-
     public static final String IS_PUBLIC = "isPublic";
     public static final String CUSTOMER_SECURITY_CHECK = "If the user has the authority of 'Tenant Administrator', the server checks that the customer is owned by the same tenant. " +
             "If the user has the authority of 'Customer User', the server checks that the user belongs to the customer.";

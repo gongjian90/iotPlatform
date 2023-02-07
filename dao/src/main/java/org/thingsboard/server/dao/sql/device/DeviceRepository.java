@@ -200,13 +200,25 @@ public interface DeviceRepository extends JpaRepository<DeviceEntity, UUID>, Exp
     List<String> findTenantDeviceTypes(@Param("tenantId") UUID tenantId);
 
     DeviceEntity findByTenantIdAndName(UUID tenantId, String name);
+    DeviceEntity findByName(String name);
 
+    @Query("SELECT d FROM DeviceEntity d WHERE d.customerId = :customerId " +
+            "AND LOWER(d.searchText) LIKE LOWER(CONCAT('%', :textSearch, '%'))")
+    Page<DeviceEntity> findByCustomerId(@Param("customerId") UUID customerId,
+                                        @Param("textSearch") String textSearch,
+                                        Pageable pageable);
+    @Query("SELECT d FROM DeviceEntity d WHERE d.installationId = :installationId " +
+            "AND LOWER(d.searchText) LIKE LOWER(CONCAT('%', :textSearch, '%'))")
+    Page<DeviceEntity> findByInstallationId(@Param("installationId") UUID installationId,
+                                        @Param("textSearch") String textSearch,
+                                        Pageable pageable);
     List<DeviceEntity> findDevicesByTenantIdAndCustomerIdAndIdIn(UUID tenantId, UUID customerId, List<UUID> deviceIds);
 
     List<DeviceEntity> findDevicesByTenantIdAndIdIn(UUID tenantId, List<UUID> deviceIds);
 
     List<DeviceEntity> findDevicesByIdIn(List<UUID> deviceIds);
-
+    List<DeviceEntity> findDevicesByTenantIdAndCustomerId(UUID tenantId, UUID customerId);
+    List<DeviceEntity> findDevicesByInstallationId(UUID installationId);
     DeviceEntity findByTenantIdAndId(UUID tenantId, UUID id);
 
     Long countByDeviceProfileId(UUID deviceProfileId);

@@ -33,6 +33,7 @@ public class SysAdminPermissions extends AbstractPermissions {
         put(Resource.TENANT, PermissionChecker.allowAllPermissionChecker);
         put(Resource.RULE_CHAIN, systemEntityPermissionChecker);
         put(Resource.USER, userPermissionChecker);
+        put(Resource.CUSTOMER, systemEntityPermissionChecker); // add by gj reason: drgk 2022年12月06日16:55:18
         put(Resource.WIDGETS_BUNDLE, systemEntityPermissionChecker);
         put(Resource.WIDGET_TYPE, systemEntityPermissionChecker);
         put(Resource.OAUTH2_CONFIGURATION_INFO, PermissionChecker.allowAllPermissionChecker);
@@ -58,9 +59,10 @@ public class SysAdminPermissions extends AbstractPermissions {
 
         @Override
         public boolean hasPermission(SecurityUser user, Operation operation, UserId userId, User userEntity) {
-            if (Authority.CUSTOMER_USER.equals(userEntity.getAuthority())) {
+            /*if (Authority.CUSTOMER_USER.equals(userEntity.getAuthority())) {
                 return false;
-            }
+            }*/
+            //注释掉上段代码，系统管理员也可以操作普通用户 modify by gj reason: drgk 2022年12月06日16:51:23
             return true;
         }
 

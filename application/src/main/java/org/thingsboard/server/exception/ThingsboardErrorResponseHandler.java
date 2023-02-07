@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
@@ -195,6 +196,8 @@ public class ThingsboardErrorResponseHandler extends ResponseEntityExceptionHand
             UserPasswordExpiredException expiredException = (UserPasswordExpiredException) authenticationException;
             String resetToken = expiredException.getResetToken();
             mapper.writeValue(response.getWriter(), ThingsboardCredentialsExpiredResponse.of(expiredException.getMessage(), resetToken));
+        } else if (authenticationException instanceof AuthenticationServiceException) {
+            mapper.writeValue(response.getWriter(), ThingsboardCredentialsExpiredResponse.of(authenticationException.getMessage(), ThingsboardErrorCode.INVALID_ARGUMENTS, HttpStatus.UNAUTHORIZED));
         } else {
             mapper.writeValue(response.getWriter(), ThingsboardErrorResponse.of("Authentication failed", ThingsboardErrorCode.AUTHENTICATION, HttpStatus.UNAUTHORIZED));
         }

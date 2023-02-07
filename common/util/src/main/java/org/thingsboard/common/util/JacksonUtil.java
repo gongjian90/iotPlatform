@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.util.ObjectUtils;
 import org.thingsboard.server.common.data.kv.DataType;
 import org.thingsboard.server.common.data.kv.KvEntry;
 
@@ -229,6 +230,44 @@ public class JacksonUtil {
         }
     }
 
+    public static JsonNode addJsonNode(JsonNode additionalInfo, String key, String value) {
+        if (!(additionalInfo instanceof ObjectNode)) {
+            additionalInfo = JacksonUtil.newObjectNode();
+        }
+        if (ObjectUtils.isEmpty(additionalInfo.get(key))) {
+            ((ObjectNode) additionalInfo).put(key, value);
+        }
+        return additionalInfo;
+    }
+    public static JsonNode appendJsonNode(JsonNode additionalInfo, String key, String value) {
+        if (!(additionalInfo instanceof ObjectNode)) {
+            additionalInfo = JacksonUtil.newObjectNode();
+        }
+        if (!ObjectUtils.isEmpty(additionalInfo.get(key))) {
+            ((ObjectNode) additionalInfo).put(key, additionalInfo.get(key) + "," +value);
+        } else {
+            ((ObjectNode) additionalInfo).put(key, value);
+        }
+        return additionalInfo;
+    }
+    public static JsonNode cancelAppendJsonNode(JsonNode additionalInfo, String key, String value) {
+        if (!(additionalInfo instanceof ObjectNode)) {
+            additionalInfo = JacksonUtil.newObjectNode();
+        }
+        if (!ObjectUtils.isEmpty(additionalInfo.get(key))) {
+            ((ObjectNode) additionalInfo).put(key, additionalInfo.get(key).asText().replace(value + ",", ""));
+        }
+        return additionalInfo;
+    }
+    public static JsonNode updateJsonNode(JsonNode additionalInfo, String key, String value) {
+        if (!(additionalInfo instanceof ObjectNode)) {
+            additionalInfo = JacksonUtil.newObjectNode();
+        }
+        if (!ObjectUtils.isEmpty(additionalInfo.get(key))) {
+            ((ObjectNode) additionalInfo).put(key, value);
+        }
+        return additionalInfo;
+    }
     public static void addKvEntry(ObjectNode entityNode, KvEntry kvEntry) {
         addKvEntry(entityNode, kvEntry, kvEntry.getKey());
     }

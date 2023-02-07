@@ -136,15 +136,16 @@ public class AppActor extends ContextAwareActor {
     }
 
     private void onQueueToRuleEngineMsg(QueueToRuleEngineMsg msg) {
-        if (TenantId.SYS_TENANT_ID.equals(msg.getTenantId())) {
-            msg.getMsg().getCallback().onFailure(new RuleEngineException("Message has system tenant id!"));
-        } else {
+//        if (TenantId.SYS_TENANT_ID.equals(msg.getTenantId())) {
+//            msg.getMsg().getCallback().onFailure(new RuleEngineException("Message has system tenant id!"));
+//        } else {
             if (!deletedTenants.contains(msg.getTenantId())) {
                 getOrCreateTenantActor(msg.getTenantId()).tell(msg);
             } else {
                 msg.getMsg().getCallback().onSuccess();
             }
-        }
+//        }
+//        modify by gj 2022年12月29日18:24:31 网关设备信息属性传递时报错，取决于使用的网关设备tenantId字段
     }
 
     private void onComponentLifecycleMsg(ComponentLifecycleMsg msg) {

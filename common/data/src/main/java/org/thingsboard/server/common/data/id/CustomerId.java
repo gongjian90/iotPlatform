@@ -22,13 +22,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.util.ConcurrentReferenceHashMap;
 import org.thingsboard.server.common.data.EntityType;
 
 @ApiModel
 public final class CustomerId extends UUIDBased implements EntityId {
 
     private static final long serialVersionUID = 1L;
-
+    @JsonIgnore
+    static final ConcurrentReferenceHashMap<UUID, CustomerId> tenants = new ConcurrentReferenceHashMap<>(16, ConcurrentReferenceHashMap.ReferenceType.SOFT);
+    @JsonCreator
+    public static CustomerId fromUUID(@JsonProperty("id") UUID id) {
+        return tenants.computeIfAbsent(id, CustomerId::new);
+    }
+    @JsonIgnore
+    public static final CustomerId SYS_CUSTOMER_ID = CustomerId.fromUUID(EntityId.NULL_UUID);
     @JsonCreator
     public CustomerId(@JsonProperty("id") UUID id) {
         super(id);

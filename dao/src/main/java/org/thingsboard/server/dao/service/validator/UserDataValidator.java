@@ -117,14 +117,14 @@ public class UserDataValidator extends DataValidator<User> {
                 break;
             case TENANT_ADMIN:
                 if (tenantId.getId().equals(ModelConstants.NULL_UUID)) {
-                    throw new DataValidationException("Tenant administrator should be assigned to tenant!");
+                    //throw new DataValidationException("Tenant administrator should be assigned to tenant!");
                 } else if (!customerId.getId().equals(ModelConstants.NULL_UUID)) {
                     throw new DataValidationException("Tenant administrator can't be assigned to customer!");
                 }
                 break;
             case CUSTOMER_USER:
-                if (tenantId.getId().equals(ModelConstants.NULL_UUID)
-                        || customerId.getId().equals(ModelConstants.NULL_UUID)) {
+                if (!tenantId.getId().equals(ModelConstants.NULL_UUID)  // 租户和客户同级处理，增加！非的判断 2022年12月06日18:25:35
+                        /*|| customerId.getId().equals(ModelConstants.NULL_UUID)*/) { // modify by gj 2022年12月06日18:25:32
                     throw new DataValidationException("Customer user should be assigned to customer!");
                 }
                 break;

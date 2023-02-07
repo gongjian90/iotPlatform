@@ -25,36 +25,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.async.DeferredResult;
 import org.thingsboard.common.util.ThingsBoardThreadFactory;
-import org.thingsboard.server.common.data.ApiUsageState;
-import org.thingsboard.server.common.data.Customer;
-import org.thingsboard.server.common.data.Device;
-import org.thingsboard.server.common.data.DeviceProfile;
-import org.thingsboard.server.common.data.EntityView;
-import org.thingsboard.server.common.data.OtaPackageInfo;
-import org.thingsboard.server.common.data.TbResourceInfo;
-import org.thingsboard.server.common.data.Tenant;
-import org.thingsboard.server.common.data.User;
+import org.thingsboard.server.common.data.*;
 import org.thingsboard.server.common.data.asset.Asset;
 import org.thingsboard.server.common.data.asset.AssetProfile;
 import org.thingsboard.server.common.data.edge.Edge;
 import org.thingsboard.server.common.data.exception.ThingsboardException;
-import org.thingsboard.server.common.data.id.ApiUsageStateId;
-import org.thingsboard.server.common.data.id.AssetId;
-import org.thingsboard.server.common.data.id.AssetProfileId;
-import org.thingsboard.server.common.data.id.CustomerId;
-import org.thingsboard.server.common.data.id.DeviceId;
-import org.thingsboard.server.common.data.id.DeviceProfileId;
-import org.thingsboard.server.common.data.id.EdgeId;
-import org.thingsboard.server.common.data.id.EntityId;
-import org.thingsboard.server.common.data.id.EntityIdFactory;
-import org.thingsboard.server.common.data.id.EntityViewId;
-import org.thingsboard.server.common.data.id.OtaPackageId;
-import org.thingsboard.server.common.data.id.RpcId;
-import org.thingsboard.server.common.data.id.RuleChainId;
-import org.thingsboard.server.common.data.id.RuleNodeId;
-import org.thingsboard.server.common.data.id.TbResourceId;
-import org.thingsboard.server.common.data.id.TenantId;
-import org.thingsboard.server.common.data.id.UserId;
+import org.thingsboard.server.common.data.id.*;
 import org.thingsboard.server.common.data.rpc.Rpc;
 import org.thingsboard.server.common.data.rule.RuleChain;
 import org.thingsboard.server.common.data.rule.RuleNode;
@@ -69,6 +45,7 @@ import org.thingsboard.server.dao.edge.EdgeService;
 import org.thingsboard.server.dao.entityview.EntityViewService;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
 import org.thingsboard.server.dao.ota.OtaPackageService;
+import org.thingsboard.server.dao.installation.InstallationService;
 import org.thingsboard.server.dao.resource.ResourceService;
 import org.thingsboard.server.dao.rpc.RpcService;
 import org.thingsboard.server.dao.rule.RuleChainService;
@@ -148,6 +125,9 @@ public class AccessValidator {
 
     @Autowired
     protected RpcService rpcService;
+
+    @Autowired
+    protected InstallationService installationService; // add by GJ 2022年12月31日16:35:24
 
     private ExecutorService executor;
 
@@ -277,6 +257,22 @@ public class AccessValidator {
                 }
             }), executor);
         }
+    }
+    // add by GJ 2023年01月09日16:06:00
+    private void validateInstallation(final SecurityUser currentUser, Operation operation, EntityId entityId, FutureCallback<ValidationResult> callback) {
+        ListenableFuture<Installation> paramFuture = installationService.findInstallationByIdAsync(currentUser.getTenantId(), new InstallationId(entityId.getId()));
+        Futures.addCallback(paramFuture, getCallback(callback, installation -> {
+            if (installation == null) {
+                return ValidationResult.entityNotFound("Installation with requested id wasn't found!");
+            } else {
+                try {
+                    accessControlService.checkPermission(currentUser, Resource.INSTALLATION, operation, entityId, installation);
+                } catch (ThingsboardException e) {
+                    return ValidationResult.accessDenied(e.getMessage());
+                }
+                return ValidationResult.ok(installation);
+            }
+        }), executor);
     }
 
     private void validateRpc(final SecurityUser currentUser, Operation operation, EntityId entityId, FutureCallback<ValidationResult> callback) {

@@ -34,6 +34,7 @@ import org.thingsboard.server.dao.tenant.TbTenantProfileCache;
 import org.thingsboard.server.dao.tenant.TenantService;
 
 import static org.thingsboard.server.dao.model.ModelConstants.NULL_UUID;
+import static org.thingsboard.server.dao.model.ModelConstants.TB_SERVICE_QUEUE;
 
 @Component
 public class AssetDataValidator extends DataValidator<Asset> {
@@ -56,7 +57,7 @@ public class AssetDataValidator extends DataValidator<Asset> {
     protected void validateCreate(TenantId tenantId, Asset asset) {
         DefaultTenantProfileConfiguration profileConfiguration =
                 (DefaultTenantProfileConfiguration) tenantProfileCache.get(tenantId).getProfileData().getConfiguration();
-        if (!BaseAssetService.TB_SERVICE_QUEUE.equals(asset.getType())) {
+        if (!TB_SERVICE_QUEUE.equals(asset.getType())) {
             long maxAssets = profileConfiguration.getMaxAssets();
             validateNumberOfEntitiesPerTenant(tenantId, assetDao, maxAssets, EntityType.ASSET);
         }

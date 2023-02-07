@@ -37,6 +37,7 @@ import org.thingsboard.server.dao.dashboard.DashboardService;
 import org.thingsboard.server.dao.device.DeviceProfileService;
 import org.thingsboard.server.dao.device.DeviceService;
 import org.thingsboard.server.dao.entity.AbstractCachedEntityService;
+import org.thingsboard.server.dao.installation.InstallationService;
 import org.thingsboard.server.dao.ota.OtaPackageService;
 import org.thingsboard.server.dao.queue.QueueService;
 import org.thingsboard.server.dao.resource.ResourceService;
@@ -52,6 +53,7 @@ import org.thingsboard.server.dao.widget.WidgetsBundleService;
 
 import java.util.List;
 
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_TENANT_ID;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Service
@@ -59,8 +61,6 @@ import static org.thingsboard.server.dao.service.Validator.validateId;
 public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Tenant, TenantEvictEvent> implements TenantService {
 
     private static final String DEFAULT_TENANT_REGION = "Global";
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-
     @Autowired
     private TenantDao tenantDao;
 
@@ -122,6 +122,9 @@ public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Ten
     @Autowired
     protected TbTransactionalCache<TenantId, Boolean> existsTenantCache;
 
+    @Autowired
+    protected InstallationService installationService;
+
     @TransactionalEventListener(classes = TenantEvictEvent.class)
     @Override
     public void handleEvictEvent(TenantEvictEvent event) {
@@ -139,7 +142,11 @@ public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Ten
 
         return cache.getAndPutInTransaction(tenantId, () -> tenantDao.findById(tenantId, tenantId.getId()), true);
     }
-
+    @Override
+    public Tenant findTenantByEmail( String email) {
+        log.trace("Executing findTenantByEmail [{}]", email);
+        return tenantDao.findTenantByEmail(email);
+    }
     @Override
     public TenantInfo findTenantInfoById(TenantId tenantId) {
         log.trace("Executing findTenantInfoById [{}]", tenantId);
@@ -187,6 +194,7 @@ public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Ten
         entityViewService.deleteEntityViewsByTenantId(tenantId);
         widgetsBundleService.deleteWidgetsBundlesByTenantId(tenantId);
         assetService.deleteAssetsByTenantId(tenantId);
+        installationService.deleteInstallationsByTenantId(tenantId);        // add by gj reason:drgk 2023年01月12日17:17:40
         assetProfileService.deleteAssetProfilesByTenantId(tenantId);
         deviceService.deleteDevicesByTenantId(tenantId);
         deviceProfileService.deleteDeviceProfilesByTenantId(tenantId);
@@ -242,6 +250,25 @@ public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Ten
     @Override
     public boolean tenantExists(TenantId tenantId) {
         return existsTenantCache.getAndPutInTransaction(tenantId, () -> tenantDao.existsById(tenantId, tenantId.getId()), false);
+    }
+
+    @Override
+    @Transactional
+    public Tenant saveTenantNoValidate(Tenant tenant) {
+        log.trace("Executing saveTenant [{}]", tenant);
+        tenant.setRegion(DEFAULT_TENANT_REGION);
+        if (tenant.getTenantProfileId() == null) {
+            TenantProfile tenantProfile = this.tenantProfileService.findOrCreateDefaultTenantProfile(TenantId.SYS_TENANT_ID);
+            tenant.setTenantProfileId(tenantProfile.getId());
+        }
+        boolean create = tenant.getId() == null;
+        Tenant savedTenant = tenantDao.save(tenant.getId(), tenant);
+        publishEvictEvent(new TenantEvictEvent(savedTenant.getId(), create));
+        if (tenant.getId() == null) {
+            deviceProfileService.createDefaultDeviceProfile(savedTenant.getId());
+            apiUsageStateService.createDefaultApiUsageState(savedTenant.getId(), null);
+        }
+        return savedTenant;
     }
 
     private PaginatedRemover<TenantId, Tenant> tenantsRemover = new PaginatedRemover<>() {

@@ -50,6 +50,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.thingsboard.server.common.data.StringUtils.isBlank;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_ENTITY_ID;
 
 /**
  * @author Andrew Shvayka
@@ -279,7 +280,7 @@ public class BaseTimeseriesService implements TimeseriesService {
     }
 
     private static void validate(EntityId entityId) {
-        Validator.validateEntityId(entityId, "Incorrect entityId " + entityId);
+        Validator.validateEntityId(entityId, INCORRECT_ENTITY_ID + entityId);
     }
 
     private void validate(ReadTsKvQuery query) {

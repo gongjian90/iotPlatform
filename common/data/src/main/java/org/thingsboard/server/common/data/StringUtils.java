@@ -18,6 +18,14 @@ package org.thingsboard.server.common.data;
 import com.google.common.base.Splitter;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 import static org.apache.commons.lang3.StringUtils.repeat;
 
 public class StringUtils {
@@ -180,4 +188,52 @@ public class StringUtils {
         return RandomStringUtils.randomAlphabetic(count);
     }
 
+    /**
+     * "[412,142,345]" 处理数组字符串，返回总和
+     * @param str 数组字符串
+     * @return sum
+     */
+    public static BigDecimal listStrAndAdd(String str) {
+        assert org.apache.commons.lang3.StringUtils.isBlank(str);
+        str = str.replace("[","").replace("]","");
+        List<String> list = Arrays.stream(str.split(",")).map(String::trim).collect(Collectors.toList());
+        BigDecimal result = new BigDecimal(0);
+        for (String s : list) {
+            result = result.add(new BigDecimal(s));
+        }
+        return result;
+    }
+
+    /**
+     * "abc[def]ghi[jkl]mno"
+     * @return def, jkl
+     */
+    public static List<String> matchStringInSquareBrackets(String str) {
+        List<String> result = new ArrayList<>();
+        if (StringUtils.isBlank(str)) {
+            result.add("000"); //默认值
+            return result;
+        }
+        // 创建正则表达式模式
+        Pattern pattern = Pattern.compile("\\[(.*?)\\]");
+        // 创建匹配器
+        Matcher matcher = pattern.matcher(str);
+        // 在字符串中查找匹配的内容
+        while (matcher.find()) {
+            // 输出中括号里的内容
+            result.add(matcher.group(1));
+        }
+        if (result.size() < 1) {
+            result.add("000"); //默认值
+        }
+        return result;
+    }
+
+    public static String subStringFromSquareBrackets(String str) {
+        if (isBlank(str)) {
+            return "";
+        }
+        String[] split = str.split("\\[");
+        return split[0];
+    }
 }

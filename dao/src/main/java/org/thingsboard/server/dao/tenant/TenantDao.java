@@ -30,6 +30,8 @@ public interface TenantDao extends Dao<Tenant> {
 
     TenantInfo findTenantInfoById(TenantId tenantId, UUID id);
 
+    Tenant findTenantByEmail(String email);
+
     /**
      * Save or update tenant object
      *

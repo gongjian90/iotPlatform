@@ -33,6 +33,7 @@ import org.thingsboard.server.dao.dashboard.DashboardService;
 import org.thingsboard.server.dao.device.DeviceService;
 import org.thingsboard.server.dao.entity.AbstractEntityService;
 import org.thingsboard.server.dao.exception.IncorrectParameterException;
+import org.thingsboard.server.dao.installation.InstallationService;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 import org.thingsboard.server.dao.service.Validator;
@@ -42,6 +43,7 @@ import org.thingsboard.server.dao.user.UserService;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Service
@@ -49,8 +51,6 @@ import static org.thingsboard.server.dao.service.Validator.validateId;
 public class CustomerServiceImpl extends AbstractEntityService implements CustomerService {
 
     public static final String PUBLIC_CUSTOMER_TITLE = "Public";
-    public static final String INCORRECT_CUSTOMER_ID = "Incorrect customerId ";
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
 
     @Autowired
     private CustomerDao customerDao;
@@ -74,11 +74,20 @@ public class CustomerServiceImpl extends AbstractEntityService implements Custom
     @Autowired
     private DataValidator<Customer> customerValidator;
 
+    @Autowired
+    private InstallationService installationService;
+
     @Override
     public Customer findCustomerById(TenantId tenantId, CustomerId customerId) {
         log.trace("Executing findCustomerById [{}]", customerId);
         Validator.validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         return customerDao.findById(tenantId, customerId.getId());
+    }
+
+    @Override
+    public Customer findCustomerByEmail(String email) {
+        log.trace("Executing findCustomerByEmail [{}]", email);
+        return customerDao.findByEmail(email);
     }
 
     @Override
@@ -122,6 +131,7 @@ public class CustomerServiceImpl extends AbstractEntityService implements Custom
         dashboardService.unassignCustomerDashboards(tenantId, customerId);
         entityViewService.unassignCustomerEntityViews(customer.getTenantId(), customerId);
         assetService.unassignCustomerAssets(customer.getTenantId(), customerId);
+        installationService.deleteInstallationsByCustomerId(customerId); // add by gj 2023年01月12日17:35:10
         deviceService.unassignCustomerDevices(customer.getTenantId(), customerId);
         edgeService.unassignCustomerEdges(customer.getTenantId(), customerId);
         userService.deleteCustomerUsers(customer.getTenantId(), customerId);
@@ -153,7 +163,7 @@ public class CustomerServiceImpl extends AbstractEntityService implements Custom
     @Override
     public PageData<Customer> findCustomersByTenantId(TenantId tenantId, PageLink pageLink) {
         log.trace("Executing findCustomersByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
-        Validator.validateId(tenantId, "Incorrect tenantId " + tenantId);
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         Validator.validatePageLink(pageLink);
         return customerDao.findCustomersByTenantId(tenantId.getId(), pageLink);
     }
@@ -161,7 +171,7 @@ public class CustomerServiceImpl extends AbstractEntityService implements Custom
     @Override
     public void deleteCustomersByTenantId(TenantId tenantId) {
         log.trace("Executing deleteCustomersByTenantId, tenantId [{}]", tenantId);
-        Validator.validateId(tenantId, "Incorrect tenantId " + tenantId);
+        Validator.validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         customersByTenantRemover.removeEntities(tenantId, tenantId);
     }
 

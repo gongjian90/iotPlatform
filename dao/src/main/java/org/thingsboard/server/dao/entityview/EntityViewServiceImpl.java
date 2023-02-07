@@ -54,6 +54,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 import static org.thingsboard.server.dao.service.Validator.validatePageLink;
 import static org.thingsboard.server.dao.service.Validator.validateString;
@@ -64,11 +65,6 @@ import static org.thingsboard.server.dao.service.Validator.validateString;
 @Service
 @Slf4j
 public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityViewCacheKey, EntityViewCacheValue, EntityViewEvictEvent> implements EntityViewService {
-
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    public static final String INCORRECT_CUSTOMER_ID = "Incorrect customerId ";
-    public static final String INCORRECT_ENTITY_VIEW_ID = "Incorrect entityViewId ";
-    public static final String INCORRECT_EDGE_ID = "Incorrect edgeId ";
 
     @Autowired
     private EntityViewDao entityViewDao;
@@ -179,7 +175,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
         log.trace("Executing findEntityViewByTenantIdAndType, tenantId [{}], pageLink [{}], type [{}]", tenantId, pageLink, type);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         validatePageLink(pageLink);
-        validateString(type, "Incorrect type " + type);
+        validateString(type, INCORRECT_TYPE_STRING + type);
         return entityViewDao.findEntityViewsByTenantIdAndType(tenantId.getId(), type, pageLink);
     }
 
@@ -188,7 +184,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
         log.trace("Executing findEntityViewInfosByTenantIdAndType, tenantId [{}], pageLink [{}], type [{}]", tenantId, pageLink, type);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         validatePageLink(pageLink);
-        validateString(type, "Incorrect type " + type);
+        validateString(type, INCORRECT_TYPE_STRING + type);
         return entityViewDao.findEntityViewInfosByTenantIdAndType(tenantId.getId(), type, pageLink);
     }
 
@@ -222,7 +218,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         validatePageLink(pageLink);
-        validateString(type, "Incorrect type " + type);
+        validateString(type, INCORRECT_TYPE_STRING + type);
         return entityViewDao.findEntityViewsByTenantIdAndCustomerIdAndType(tenantId.getId(),
                 customerId.getId(), type, pageLink);
     }
@@ -234,7 +230,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         validateId(customerId, INCORRECT_CUSTOMER_ID + customerId);
         validatePageLink(pageLink);
-        validateString(type, "Incorrect type " + type);
+        validateString(type, INCORRECT_TYPE_STRING + type);
         return entityViewDao.findEntityViewInfosByTenantIdAndCustomerIdAndType(tenantId.getId(),
                 customerId.getId(), type, pageLink);
     }
@@ -276,7 +272,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
     public ListenableFuture<List<EntityView>> findEntityViewsByTenantIdAndEntityIdAsync(TenantId tenantId, EntityId entityId) {
         log.trace("Executing findEntityViewsByTenantIdAndEntityIdAsync, tenantId [{}], entityId [{}]", tenantId, entityId);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        validateId(entityId.getId(), "Incorrect entityId" + entityId);
+        validateId(entityId.getId(), INCORRECT_ENTITY_ID + entityId);
 
         return service.submit(() -> cache.getAndPutInTransaction(EntityViewCacheKey.byEntityId(tenantId, entityId),
                 () -> entityViewDao.findEntityViewsByTenantIdAndEntityId(tenantId.getId(), entityId.getId()),
@@ -287,7 +283,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
     public List<EntityView> findEntityViewsByTenantIdAndEntityId(TenantId tenantId, EntityId entityId) {
         log.trace("Executing findEntityViewsByTenantIdAndEntityId, tenantId [{}], entityId [{}]", tenantId, entityId);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
-        validateId(entityId.getId(), "Incorrect entityId" + entityId);
+        validateId(entityId.getId(), INCORRECT_ENTITY_ID + entityId);
 
         return cache.getAndPutInTransaction(EntityViewCacheKey.byEntityId(tenantId, entityId),
                 () -> entityViewDao.findEntityViewsByTenantIdAndEntityId(tenantId.getId(), entityId.getId()),
@@ -380,7 +376,7 @@ public class EntityViewServiceImpl extends AbstractCachedEntityService<EntityVie
         log.trace("Executing findEntityViewsByTenantIdAndEdgeIdAndType, tenantId [{}], edgeId [{}], type [{}], pageLink [{}]", tenantId, edgeId, type, pageLink);
         validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
         validateId(edgeId, INCORRECT_EDGE_ID + edgeId);
-        validateString(type, "Incorrect type " + type);
+        validateString(type, INCORRECT_TYPE_STRING + type);
         validatePageLink(pageLink);
         return entityViewDao.findEntityViewsByTenantIdAndEdgeIdAndType(tenantId.getId(), edgeId.getId(), type, pageLink);
     }

@@ -35,7 +35,8 @@ import org.thingsboard.server.dao.service.Validator;
 import java.util.List;
 import java.util.Optional;
 
-import static org.thingsboard.server.dao.device.DeviceServiceImpl.INCORRECT_TENANT_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_RESOURCE_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_TENANT_ID;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Service
@@ -43,7 +44,6 @@ import static org.thingsboard.server.dao.service.Validator.validateId;
 @AllArgsConstructor
 public class BaseResourceService implements ResourceService {
 
-    public static final String INCORRECT_RESOURCE_ID = "Incorrect resourceId ";
     private final TbResourceDao resourceDao;
     private final TbResourceInfoDao resourceInfoDao;
     private final DataValidator<TbResource> resourceValidator;

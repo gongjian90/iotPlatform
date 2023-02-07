@@ -115,5 +115,12 @@ public class BasicTsKvEntry implements TsKvEntry {
         }
         return Math.max(1, (length + MAX_CHARS_PER_DATA_POINT - 1) / MAX_CHARS_PER_DATA_POINT);
     }
-
+    @Override
+    public void setAggregation(Aggregation aggregation) {
+        kv.setAggregation(aggregation);
+    }
+    @Override
+    public Aggregation getAggregation() {
+        return kv.getAggregation();
+    }
 }

@@ -148,12 +148,6 @@ import static org.thingsboard.server.controller.ControllerConstants.TS_STRICT_DA
 @Slf4j
 public class TelemetryController extends BaseController {
 
-    @Autowired
-    private TimeseriesService tsService;
-
-    @Autowired
-    private AccessValidator accessValidator;
-
     @Value("${transport.json.max_string_value_length:0}")
     private int maxStringValueLength;
 
@@ -905,12 +899,6 @@ public class TelemetryController extends BaseController {
                 toException(e), scope, attributes);
     }
 
-
-    private void logAttributesRead(SecurityUser user, EntityId entityId, String scope, List<String> keys, Throwable e) {
-        notificationEntityService.logEntityAction(user.getTenantId(), entityId, ActionType.ATTRIBUTES_READ, user,
-                toException(e), scope, keys);
-    }
-
     private ListenableFuture<List<AttributeKvEntry>> mergeAllAttributesFutures(List<ListenableFuture<List<AttributeKvEntry>>> futures) {
         return Futures.transform(Futures.successfulAsList(futures),
                 (Function<? super List<List<AttributeKvEntry>>, ? extends List<AttributeKvEntry>>) input -> {
@@ -920,14 +908,6 @@ public class TelemetryController extends BaseController {
                     }
                     return tmp;
                 }, executor);
-    }
-
-    private List<String> toKeysList(String keys) {
-        List<String> keyList = null;
-        if (!StringUtils.isEmpty(keys)) {
-            keyList = Arrays.asList(keys.split(","));
-        }
-        return keyList;
     }
 
     private DeferredResult<ResponseEntity> getImmediateDeferredResult(String message, HttpStatus status) {
@@ -963,28 +943,5 @@ public class TelemetryController extends BaseController {
             }
         });
         return attributes;
-    }
-
-    private String toJsonStr(JsonNode value) {
-        try {
-            return JacksonUtil.toString(value);
-        } catch (IllegalArgumentException e) {
-            throw new JsonParseException("Can't parse jsonValue: " + value, e);
-        }
-    }
-
-    private JsonNode toJsonNode(String value) {
-        try {
-            return JacksonUtil.toJsonNode(value);
-        } catch (IllegalArgumentException e) {
-            throw new JsonParseException("Can't parse jsonValue: " + value, e);
-        }
-    }
-
-    private Object getKvValue(KvEntry entry) {
-        if (entry.getDataType() == DataType.JSON) {
-            return toJsonNode(entry.getJsonValue().get());
-        }
-        return entry.getValue();
     }
 }

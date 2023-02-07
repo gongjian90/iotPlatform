@@ -28,6 +28,8 @@ import org.thingsboard.server.common.data.rpc.Rpc;
 import org.thingsboard.server.common.data.rpc.RpcStatus;
 import org.thingsboard.server.dao.service.PaginatedRemover;
 
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_RPC_ID;
+import static org.thingsboard.server.dao.model.ModelConstants.INCORRECT_TENANT_ID;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 import static org.thingsboard.server.dao.service.Validator.validatePageLink;
 
@@ -35,8 +37,6 @@ import static org.thingsboard.server.dao.service.Validator.validatePageLink;
 @Slf4j
 @RequiredArgsConstructor
 public class BaseRpcService implements RpcService {
-    public static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    public static final String INCORRECT_RPC_ID = "Incorrect rpcId ";
 
     private final RpcDao rpcDao;
 

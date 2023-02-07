@@ -48,15 +48,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.thingsboard.server.dao.model.ModelConstants.*;
 import static org.thingsboard.server.dao.service.Validator.validateId;
 
 @Service
 @Slf4j
 public class DeviceProfileServiceImpl extends AbstractCachedEntityService<DeviceProfileCacheKey, DeviceProfile, DeviceProfileEvictEvent> implements DeviceProfileService {
 
-    private static final String INCORRECT_TENANT_ID = "Incorrect tenantId ";
-    private static final String INCORRECT_DEVICE_PROFILE_ID = "Incorrect deviceProfileId ";
-    private static final String INCORRECT_DEVICE_PROFILE_NAME = "Incorrect deviceProfileName ";
     private static final String DEVICE_PROFILE_WITH_SUCH_NAME_ALREADY_EXISTS = "Device profile with such name already exists!";
 
     @Autowired

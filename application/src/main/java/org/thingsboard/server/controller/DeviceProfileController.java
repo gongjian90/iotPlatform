@@ -71,10 +71,6 @@ import static org.thingsboard.server.controller.ControllerConstants.UUID_WIKI_LI
 @Slf4j
 public class DeviceProfileController extends BaseController {
 
-    private final TbDeviceProfileService tbDeviceProfileService;
-
-    @Autowired
-    private TimeseriesService timeseriesService;
 
     @ApiOperation(value = "Get Device Profile (getDeviceProfileById)",
             notes = "Fetch the Device Profile object based on the provided Device Profile Id. " +
