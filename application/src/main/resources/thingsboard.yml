@@ -578,7 +578,7 @@ spring:
     hikari:
       maximumPoolSize: "${SPRING_DATASOURCE_MAXIMUM_POOL_SIZE:16}"
       max-lifetime: "${SPRING_DATASOURCE_MAX_LIFE_TIME:600000}" ## add by gj 2023年02月03日10:58:49
-      leakDetectionThreshold: 2000  # add by gj 2023年02月03日10:59:06
+      leakDetectionThreshold: 10000  # add by gj 2023年02月03日10:59:06 连接泄露阀值10s，即当从连接池里取出连接超过10s不归还时，会warn  Apparent connection leak detected
   jackson:
     default-property-inclusion: NON_EMPTY # add by gj 2022年12月03日16:50:44
 # Audit log parameters
@@ -968,13 +968,13 @@ swagger:
   version: "${SWAGGER_VERSION:}"
 
 queue:
-  type: "${TB_QUEUE_TYPE:in-memory}" # in-memory or kafka (Apache Kafka) or aws-sqs (AWS SQS) or pubsub (PubSub) or service-bus (Azure Service Bus) or rabbitmq (RabbitMQ)
+  type: "${TB_QUEUE_TYPE:in_memory}" # in-memory or kafka (Apache Kafka) or aws-sqs (AWS SQS) or pubsub (PubSub) or service-bus (Azure Service Bus) or rabbitmq (RabbitMQ)
   in_memory:
     stats:
       # For debug lvl
       print-interval-ms: "${TB_QUEUE_IN_MEMORY_STATS_PRINT_INTERVAL_MS:60000}"
   kafka:
-    bootstrap.servers: "${TB_KAFKA_SERVERS:localhost:9092}"
+    bootstrap.servers: "${TB_KAFKA_SERVERS:szdrgk.ddns.net:19092}"
     acks: "${TB_KAFKA_ACKS:all}"
     retries: "${TB_KAFKA_RETRIES:1}"
     compression.type: "${TB_KAFKA_COMPRESSION_TYPE:none}" # none or gzip
@@ -1218,3 +1218,10 @@ management:
       exposure:
         # Expose metrics endpoint (use value 'prometheus' to enable prometheus metrics).
         include: '${METRICS_ENDPOINTS_EXPOSE:info}'
+#本地文件服务器
+local-file:
+  port: "${LOCAL_FILE_PORT:8008}"
+  #上传路径
+  root: "${LOCAL_FILE_ROOT:${user.dir}/files/}"
+  #访问路径，如果配置https，则改为相应的域名
+  address: "${LOCAL_FILE_ADDRESS:http://localhost:${local-file.port}/}"

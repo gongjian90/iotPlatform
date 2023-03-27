@@ -36,6 +36,8 @@ public class ControllerConstants {
     protected static final String RELATION_TYPE = "relationType";
     protected static final String TO_ID = "toId";
     protected static final String MAIN_USER_ID = "mainUserId";
+
+    protected static final String OTA_FILE_URL = "otaFileUrl";
     public static final String TB_SERVICE_QUEUE = "TbServiceQueue";
     public static final String YOU_DON_T_HAVE_PERMISSION_TO_PERFORM_THIS_OPERATION = "You don't have permission to perform this operation!";
     /**

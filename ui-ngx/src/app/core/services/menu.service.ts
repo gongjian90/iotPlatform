@@ -277,13 +277,13 @@ export class MenuService {
         path: '/customers',
         icon: 'supervisor_account'
       },
-      {
-        id: guid(),
-        name: 'asset.assets',
-        type: 'link',
-        path: '/assets',
-        icon: 'domain'
-      },
+      // {
+      //   id: guid(),
+      //   name: 'asset.assets',
+      //   type: 'link',
+      //   path: '/assets',
+      //   icon: 'domain'
+      // },
       {
         id: guid(),
         name: 'device.devices',
@@ -293,30 +293,38 @@ export class MenuService {
       },
       {
         id: guid(),
-        name: 'profiles.profiles',
-        type: 'toggle',
-        path: '/profiles',
-        height: '80px',
-        icon: 'badge',
-        pages: [
-          {
-            id: guid(),
-            name: 'device-profile.device-profiles',
-            type: 'link',
-            path: '/profiles/deviceProfiles',
-            icon: 'mdi:alpha-d-box',
-            isMdiIcon: true
-          },
-          {
-            id: guid(),
-            name: 'asset-profile.asset-profiles',
-            type: 'link',
-            path: '/profiles/assetProfiles',
-            icon: 'mdi:alpha-a-box',
-            isMdiIcon: true
-          }
-        ]
+        name: 'device-profile.device-profiles',
+        type: 'link',
+        path: '/profiles/deviceProfiles',
+        icon: 'mdi:alpha-d-box',
+        isMdiIcon: true
       },
+      // {
+      //   id: guid(),
+      //   name: 'profiles.profiles',
+      //   type: 'toggle',
+      //   path: '/profiles',
+      //   // height: '80px',
+      //   icon: 'badge',
+      //   pages: [
+      //     {
+      //       id: guid(),
+      //       name: 'device-profile.device-profiles',
+      //       type: 'link',
+      //       path: '/profiles/deviceProfiles',
+      //       icon: 'mdi:alpha-d-box',
+      //       isMdiIcon: true
+      //     },
+      //     {
+      //       id: guid(),
+      //       name: 'asset-profile.asset-profiles',
+      //       type: 'link',
+      //       path: '/profiles/assetProfiles',
+      //       icon: 'mdi:alpha-a-box',
+      //       isMdiIcon: true
+      //     }
+      //   ]
+      // },
       {
         id: guid(),
         name: 'ota-update.ota-updates',
@@ -324,15 +332,16 @@ export class MenuService {
         path: '/otaUpdates',
         icon: 'memory'
       },
-      {
-        id: guid(),
-        name: 'entity-view.entity-views',
-        type: 'link',
-        path: '/entityViews',
-        icon: 'view_quilt'
-      }
+      // {
+      //   id: guid(),
+      //   name: 'entity-view.entity-views',
+      //   type: 'link',
+      //   path: '/entityViews',
+      //   icon: 'view_quilt'
+      // }
     );
-    if (authState.edgesSupportEnabled) {
+    // if (authState.edgesSupportEnabled) {
+    if (false) {
       sections.push(
         {
           id: guid(),
@@ -375,20 +384,20 @@ export class MenuService {
         path: '/dashboards',
         icon: 'dashboards'
       },
-      {
-        id: guid(),
-        name: 'version-control.version-control',
-        type: 'link',
-        path: '/vc',
-        icon: 'history'
-      },
-      {
-        id: guid(),
-        name: 'audit-log.audit-logs',
-        type: 'link',
-        path: '/auditLogs',
-        icon: 'track_changes'
-      },
+      // {
+      //   id: guid(),
+      //   name: 'version-control.version-control',
+      //   type: 'link',
+      //   path: '/vc',
+      //   icon: 'history'
+      // },
+      // {
+      //   id: guid(),
+      //   name: 'audit-log.audit-logs',
+      //   type: 'link',
+      //   path: '/auditLogs',
+      //   icon: 'track_changes'
+      // },
       {
         id: guid(),
         name: 'api-usage.api-usage',
@@ -442,42 +451,6 @@ export class MenuService {
     const homeSections: Array<HomeSection> = [];
     homeSections.push(
       {
-        name: 'rulechain.management',
-        places: [
-          {
-            name: 'rulechain.rulechains',
-            icon: 'settings_ethernet',
-            path: '/ruleChains'
-          }
-        ]
-      },
-      {
-        name: 'customer.management',
-        places: [
-          {
-            name: 'customer.customers',
-            icon: 'supervisor_account',
-            path: '/customers'
-          }
-        ]
-      },
-      {
-        name: 'asset.management',
-        places: [
-          {
-            name: 'asset.assets',
-            icon: 'domain',
-            path: '/assets'
-          },
-          {
-            name: 'asset-profile.asset-profiles',
-            icon: 'mdi:alpha-a-box',
-            isMdiIcon: true,
-            path: '/profiles/assetProfiles'
-          }
-        ]
-      },
-      {
         name: 'device.management',
         places: [
           {
@@ -497,37 +470,56 @@ export class MenuService {
             path: '/otaUpdates'
           }
         ]
-      },
-      {
-        name: 'entity-view.management',
-        places: [
-          {
-            name: 'entity-view.entity-views',
-            icon: 'view_quilt',
-            path: '/entityViews'
-          }
-        ]
       }
+      // ,
+      // {
+      //   name: 'asset.management',
+      //   places: [
+      //     {
+      //       name: 'asset.assets',
+      //       icon: 'domain',
+      //       path: '/assets'
+      //     },
+      //     {
+      //       name: 'asset-profile.asset-profiles',
+      //       icon: 'mdi:alpha-a-box',
+      //       isMdiIcon: true,
+      //       path: '/profiles/assetProfiles'
+      //     }
+      //   ]
+      // },
+
+      // {
+      //   name: 'entity-view.management',
+      //   places: [
+      //     {
+      //       name: 'entity-view.entity-views',
+      //       icon: 'view_quilt',
+      //       path: '/entityViews'
+      //     }
+      //   ]
+      // }
+
     );
-    if (authState.edgesSupportEnabled) {
-      homeSections.push(
-        {
-          name: 'edge.management',
-          places: [
-            {
-              name: 'edge.edge-instances',
-              icon: 'router',
-              path: '/edgeInstances'
-            },
-            {
-              name: 'edge.rulechain-templates',
-              icon: 'settings_ethernet',
-              path: '/edgeManagement/ruleChains'
-            }
-          ]
-        }
-      );
-    }
+    // if (authState.edgesSupportEnabled) {
+    //   homeSections.push(
+    //     {
+    //       name: 'edge.management',
+    //       places: [
+    //         {
+    //           name: 'edge.edge-instances',
+    //           icon: 'router',
+    //           path: '/edgeInstances'
+    //         },
+    //         {
+    //           name: 'edge.rulechain-templates',
+    //           icon: 'settings_ethernet',
+    //           path: '/edgeManagement/ruleChains'
+    //         }
+    //       ]
+    //     }
+    //   );
+    // }
     homeSections.push(
       {
         name: 'dashboard.management',
@@ -544,13 +536,23 @@ export class MenuService {
           }
         ]
       },
+      // {
+      //   name: 'version-control.management',
+      //   places: [
+      //     {
+      //       name: 'version-control.version-control',
+      //       icon: 'history',
+      //       path: '/vc'
+      //     }
+      //   ]
+      // },
       {
-        name: 'version-control.management',
+        name: 'customer.management',
         places: [
           {
-            name: 'version-control.version-control',
-            icon: 'history',
-            path: '/vc'
+            name: 'customer.customers',
+            icon: 'supervisor_account',
+            path: '/customers'
           }
         ]
       },
@@ -566,6 +568,16 @@ export class MenuService {
             name: 'api-usage.api-usage',
             icon: 'insert_chart',
             path: '/usage'
+          }
+        ]
+      },
+      {
+        name: 'rulechain.management',
+        places: [
+          {
+            name: 'rulechain.rulechains',
+            icon: 'settings_ethernet',
+            path: '/ruleChains'
           }
         ]
       },

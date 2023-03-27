@@ -34,7 +34,7 @@ export class HelpComponent {
       helpUrl = this.helpLinkId;
     }
     if (helpUrl) {
-      window.open(helpUrl, '_blank');
+      // window.open(helpUrl, '_blank');
     }
   }
 

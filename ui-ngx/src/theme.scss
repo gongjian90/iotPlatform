@@ -19,9 +19,12 @@
 
 @include mat.core();
 
-$tb-primary-color: #305680;
-$tb-secondary-color: #527dad;
-$tb-hue3-color: #a7c1de;
+//$tb-primary-color: #305680;
+//$tb-secondary-color: #527dad;
+//$tb-hue3-color: #a7c1de;
+$tb-primary-color: #539E54;
+$tb-secondary-color: #3E9E40;
+$tb-hue3-color: #fae596;
 
 $tb-dark-primary-color: #9fa8da;
 
@@ -59,7 +62,8 @@ $tb-mat-indigo: (
 );
 
 $tb-primary: mat.define-palette($tb-mat-indigo);
-$tb-accent: mat.define-palette(mat.$deep-orange-palette);
+//$tb-accent: mat.define-palette(mat.$deep-orange-palette);
+$tb-accent: mat.define-palette(mat.$light-green-palette);
 
 $background: (background: map_get(mat.$grey-palette, 200));
 
