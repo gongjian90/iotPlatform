@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Daren Hi-Tech Electronics Co., Ltd. Development Team 2020-2022. All rights reserved.
+ * Copyright (c) Union Co., Ltd. Development Team 2020-2022. All rights reserved.
  * File name:   BatteryGraphVO.java
  * Author: gongjian   ID:     Version:    Date: 2023/1/5
  * Description: // 用于详细说明此程序文件完成的主要功能，与其他模块

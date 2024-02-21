@@ -108,7 +108,7 @@ export class MenuService {
         name: 'admin.system-settings',
         type: 'toggle',
         path: '/settings',
-        height: '320px',
+        // height: '320px',
         icon: 'settings',
         pages: [
           {
@@ -118,20 +118,20 @@ export class MenuService {
             path: '/settings/general',
             icon: 'settings_applications'
           },
-          {
-            id: guid(),
-            name: 'admin.outgoing-mail',
-            type: 'link',
-            path: '/settings/outgoing-mail',
-            icon: 'mail'
-          },
-          {
-            id: guid(),
-            name: 'admin.sms-provider',
-            type: 'link',
-            path: '/settings/sms-provider',
-            icon: 'sms'
-          },
+          // {
+          //   id: guid(),
+          //   name: 'admin.outgoing-mail',
+          //   type: 'link',
+          //   path: '/settings/outgoing-mail',
+          //   icon: 'mail'
+          // },
+          // {
+          //   id: guid(),
+          //   name: 'admin.sms-provider',
+          //   type: 'link',
+          //   path: '/settings/sms-provider',
+          //   icon: 'sms'
+          // },
           {
             id: guid(),
             name: 'admin.security-settings',
@@ -139,35 +139,35 @@ export class MenuService {
             path: '/settings/security-settings',
             icon: 'security'
           },
-          {
-            id: guid(),
-            name: 'admin.oauth2.oauth2',
-            type: 'link',
-            path: '/settings/oauth2',
-            icon: 'security'
-          },
-          {
-            id: guid(),
-            name: 'admin.2fa.2fa',
-            type: 'link',
-            path: '/settings/2fa',
-            icon: 'mdi:two-factor-authentication',
-            isMdiIcon: true
-          },
-          {
-            id: guid(),
-            name: 'resource.resources-library',
-            type: 'link',
-            path: '/settings/resources-library',
-            icon: 'folder'
-          },
-          {
-            id: guid(),
-            name: 'admin.queues',
-            type: 'link',
-            path: '/settings/queues',
-            icon: 'swap_calls'
-          },
+          // {
+          //   id: guid(),
+          //   name: 'admin.oauth2.oauth2',
+          //   type: 'link',
+          //   path: '/settings/oauth2',
+          //   icon: 'security'
+          // },
+          // {
+          //   id: guid(),
+          //   name: 'admin.2fa.2fa',
+          //   type: 'link',
+          //   path: '/settings/2fa',
+          //   icon: 'mdi:two-factor-authentication',
+          //   isMdiIcon: true
+          // },
+          // {
+          //   id: guid(),
+          //   name: 'resource.resources-library',
+          //   type: 'link',
+          //   path: '/settings/resources-library',
+          //   icon: 'folder'
+          // },
+          // {
+          //   id: guid(),
+          //   name: 'admin.queues',
+          //   type: 'link',
+          //   path: '/settings/queues',
+          //   icon: 'swap_calls'
+          // },
         ]
       }
     );
@@ -211,42 +211,42 @@ export class MenuService {
             icon: 'settings_applications',
             path: '/settings/general'
           },
-          {
-            name: 'admin.outgoing-mail',
-            icon: 'mail',
-            path: '/settings/outgoing-mail'
-          },
-          {
-            name: 'admin.sms-provider',
-            icon: 'sms',
-            path: '/settings/sms-provider'
-          },
+          // {
+          //   name: 'admin.outgoing-mail',
+          //   icon: 'mail',
+          //   path: '/settings/outgoing-mail'
+          // },
+          // {
+          //   name: 'admin.sms-provider',
+          //   icon: 'sms',
+          //   path: '/settings/sms-provider'
+          // },
           {
             name: 'admin.security-settings',
             icon: 'security',
             path: '/settings/security-settings'
           },
-          {
-            name: 'admin.oauth2.oauth2',
-            icon: 'security',
-            path: '/settings/oauth2'
-          },
-          {
-            name: 'admin.2fa.2fa',
-            icon: 'mdi:two-factor-authentication',
-            isMdiIcon: true,
-            path: '/settings/2fa'
-          },
-          {
-            name: 'resource.resources-library',
-            icon: 'folder',
-            path: '/settings/resources-library'
-          },
-          {
-            name: 'admin.queues',
-            icon: 'swap_calls',
-            path: '/settings/queues'
-          },
+          // {
+          //   name: 'admin.oauth2.oauth2',
+          //   icon: 'security',
+          //   path: '/settings/oauth2'
+          // },
+          // {
+          //   name: 'admin.2fa.2fa',
+          //   icon: 'mdi:two-factor-authentication',
+          //   isMdiIcon: true,
+          //   path: '/settings/2fa'
+          // },
+          // {
+          //   name: 'resource.resources-library',
+          //   icon: 'folder',
+          //   path: '/settings/resources-library'
+          // },
+          // {
+          //   name: 'admin.queues',
+          //   icon: 'swap_calls',
+          //   path: '/settings/queues'
+          // },
         ]
       }
     );
@@ -263,13 +263,13 @@ export class MenuService {
         path: '/home',
         icon: 'home'
       },
-      {
-        id: guid(),
-        name: 'rulechain.rulechains',
-        type: 'link',
-        path: '/ruleChains',
-        icon: 'settings_ethernet'
-      },
+      // {
+      //   id: guid(),
+      //   name: 'rulechain.rulechains',
+      //   type: 'link',
+      //   path: '/ruleChains',
+      //   icon: 'settings_ethernet'
+      // },
       {
         id: guid(),
         name: 'customer.customers',
@@ -398,13 +398,13 @@ export class MenuService {
       //   path: '/auditLogs',
       //   icon: 'track_changes'
       // },
-      {
-        id: guid(),
-        name: 'api-usage.api-usage',
-        type: 'link',
-        path: '/usage',
-        icon: 'insert_chart'
-      },
+      // {
+      //   id: guid(),
+      //   name: 'api-usage.api-usage',
+      //   type: 'link',
+      //   path: '/usage',
+      //   icon: 'insert_chart'
+      // },
       {
         id: guid(),
         name: 'admin.system-settings',
@@ -426,7 +426,7 @@ export class MenuService {
             type: 'link',
             path: '/settings/resources-library',
             icon: 'folder'
-          },
+          }/*,
           {
             id: guid(),
             name: 'admin.repository-settings',
@@ -440,7 +440,7 @@ export class MenuService {
             type: 'link',
             path: '/settings/auto-commit',
             icon: 'settings_backup_restore'
-          }
+          }*/
         ]
       }
     );
@@ -556,31 +556,31 @@ export class MenuService {
           }
         ]
       },
-      {
-        name: 'audit-log.audit',
-        places: [
-          {
-            name: 'audit-log.audit-logs',
-            icon: 'track_changes',
-            path: '/auditLogs'
-          },
-          {
-            name: 'api-usage.api-usage',
-            icon: 'insert_chart',
-            path: '/usage'
-          }
-        ]
-      },
-      {
-        name: 'rulechain.management',
-        places: [
-          {
-            name: 'rulechain.rulechains',
-            icon: 'settings_ethernet',
-            path: '/ruleChains'
-          }
-        ]
-      },
+      // {
+      //   name: 'audit-log.audit',
+      //   places: [
+      //     {
+      //       name: 'audit-log.audit-logs',
+      //       icon: 'track_changes',
+      //       path: '/auditLogs'
+      //     },
+      //     {
+      //       name: 'api-usage.api-usage',
+      //       icon: 'insert_chart',
+      //       path: '/usage'
+      //     }
+      //   ]
+      // },
+      // {
+      //   name: 'rulechain.management',
+      //   places: [
+      //     {
+      //       name: 'rulechain.rulechains',
+      //       icon: 'settings_ethernet',
+      //       path: '/ruleChains'
+      //     }
+      //   ]
+      // },
       {
         name: 'admin.system-settings',
         places: [
@@ -593,7 +593,7 @@ export class MenuService {
             name: 'resource.resources-library',
             icon: 'folder',
             path: '/settings/resources-library'
-          },
+          }/*,
           {
             name: 'admin.repository-settings',
             icon: 'manage_history',
@@ -603,7 +603,7 @@ export class MenuService {
             name: 'admin.auto-commit-settings',
             icon: 'settings_backup_restore',
             path: '/settings/auto-commit'
-          }
+          }*/
         ]
       }
     );

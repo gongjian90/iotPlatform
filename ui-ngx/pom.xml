@@ -27,7 +27,7 @@
     <artifactId>ui-ngx</artifactId>
     <packaging>jar</packaging>
 
-    <name>DRGK IOT Server UI</name>
+    <name>ESSKS IOT Server UI</name>
     <url>https://thingsboard.io</url>
 
     <properties>

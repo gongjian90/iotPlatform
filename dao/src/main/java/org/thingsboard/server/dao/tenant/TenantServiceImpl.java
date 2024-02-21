@@ -194,7 +194,7 @@ public class TenantServiceImpl extends AbstractCachedEntityService<TenantId, Ten
         entityViewService.deleteEntityViewsByTenantId(tenantId);
         widgetsBundleService.deleteWidgetsBundlesByTenantId(tenantId);
         assetService.deleteAssetsByTenantId(tenantId);
-        installationService.deleteInstallationsByTenantId(tenantId);        // add by gj reason:drgk 2023年01月12日17:17:40
+        installationService.deleteInstallationsByTenantId(tenantId);        // add by gj reason:essks 2023年01月12日17:17:40
         assetProfileService.deleteAssetProfilesByTenantId(tenantId);
         deviceService.deleteDevicesByTenantId(tenantId);
         deviceProfileService.deleteDeviceProfilesByTenantId(tenantId);

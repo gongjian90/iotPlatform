@@ -96,7 +96,7 @@ public abstract class AbstractTbEntityService {
     protected CustomerService customerService;
     @Autowired
     protected TbClusterService tbClusterService;
-    // add by gj reason: drgk begin 2022年12月03日17:26:26
+    // add by gj reason: essks begin 2022年12月03日17:26:26
     @Autowired
     protected UserService userService;
     @Autowired

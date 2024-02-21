@@ -568,13 +568,12 @@ spring:
   datasource:
     driverClassName: "${SPRING_DRIVER_CLASS_NAME:org.postgresql.Driver}"
     #url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.0.85:1988/thingsboard}"
-    #url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://szdrgk.ddns.net:2988/thingsboard}"
     #url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://172.16.90.130:5432/thingsboard}"
     #url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/thingsboard}"
-    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.0.85:1988/thingsboard}"
+    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://192.168.0.42:1988/thingsboard}"
     username: "${SPRING_DATASOURCE_USERNAME:postgres}"
-    password: "${SPRING_DATASOURCE_PASSWORD:Drgk1116+}"
-    #password: "${SPRING_DATASOURCE_PASSWORD:6STskG$$3v%NMmbZ}"
+#    password: "${SPRING_DATASOURCE_PASSWORD:ESSKS1116+}"
+    password: "${SPRING_DATASOURCE_PASSWORD:6STskG$$3v%NMmbZ}"
     hikari:
       maximumPoolSize: "${SPRING_DATASOURCE_MAXIMUM_POOL_SIZE:16}"
       max-lifetime: "${SPRING_DATASOURCE_MAX_LIFE_TIME:600000}" ## add by gj 2023年02月03日10:58:49
@@ -968,13 +967,13 @@ swagger:
   version: "${SWAGGER_VERSION:}"
 
 queue:
-  type: "${TB_QUEUE_TYPE:in_memory}" # in-memory or kafka (Apache Kafka) or aws-sqs (AWS SQS) or pubsub (PubSub) or service-bus (Azure Service Bus) or rabbitmq (RabbitMQ)
+  type: "${TB_QUEUE_TYPE:in-memory}" # in-memory or kafka (Apache Kafka) or aws-sqs (AWS SQS) or pubsub (PubSub) or service-bus (Azure Service Bus) or rabbitmq (RabbitMQ)
   in_memory:
     stats:
       # For debug lvl
       print-interval-ms: "${TB_QUEUE_IN_MEMORY_STATS_PRINT_INTERVAL_MS:60000}"
   kafka:
-    bootstrap.servers: "${TB_KAFKA_SERVERS:szdrgk.ddns.net:19092}"
+    bootstrap.servers: "${TB_KAFKA_SERVERS:192.168.0.42:19092}"
     acks: "${TB_KAFKA_ACKS:all}"
     retries: "${TB_KAFKA_RETRIES:1}"
     compression.type: "${TB_KAFKA_COMPRESSION_TYPE:none}" # none or gzip

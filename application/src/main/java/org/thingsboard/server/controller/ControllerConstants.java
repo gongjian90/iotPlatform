@@ -65,6 +65,7 @@ public class ControllerConstants {
     protected static final String INCORRECT_RPC_ID = "Incorrect rpcId ";
     protected static final String INCORRECT_QUEUE_ID = "Incorrect queueId ";
     public static final String INCORRECT_PORTAL_ID = "Incorrect portal Id ";
+	protected static final String ASSIGNEE_ID = "assigneeId";
     /**
      *
      */

@@ -80,7 +80,7 @@ public class CustomerUserPermissions extends AbstractPermissions {
                     return operation.equals(Operation.CLAIM_DEVICES) || user.getCustomerId().equals(((HasCustomerId) entity).getCustomerId());
                 }
             };*/
-    // modify by gj reason: drgk 2022年12月03日15:37:42
+    // modify by gj reason: essks 2022年12月03日15:37:42
     private static final PermissionChecker customerEntityPermissionChecker = new PermissionChecker() {
 
         @Override
@@ -100,8 +100,8 @@ public class CustomerUserPermissions extends AbstractPermissions {
 
     private static final PermissionChecker customerPermissionChecker =
             new PermissionChecker.GenericPermissionChecker(Operation.READ, Operation.WRITE, Operation.READ_ATTRIBUTES, Operation.READ_TELEMETRY, Operation.DELETE) {
-                // add Operation.DELETE by gj reason: drgk 2022年12月03日14:51:04
-                // add Operation.WRITE by gj reason:drgk 2023年01月19日10:32:37
+                // add Operation.DELETE by gj reason: essks 2022年12月03日14:51:04
+                // add Operation.WRITE by gj reason:essks 2023年01月19日10:32:37
                 @Override
                 @SuppressWarnings("unchecked")
                 public boolean hasPermission(SecurityUser user, Operation operation, EntityId entityId, HasTenantId entity) {

@@ -280,11 +280,11 @@ public class DefaultTransportApiService implements TransportApiService {
             Lock deviceCreationLock = deviceCreationLocks.computeIfAbsent(requestMsg.getDeviceName(), id -> new ReentrantLock());
             deviceCreationLock.lock();
             try {
-                // modify by gj reason:drgk 2022年12月29日17:26:42
+                // modify by gj reason:essks 2022年12月29日17:26:42
                 //Device device = deviceService.findDeviceByTenantIdAndName(gateway.getTenantId(), requestMsg.getDeviceName());
                 Device device = deviceService.findDeviceByName(requestMsg.getDeviceName());
                 if (device == null) {
-                    // add by gj reason:drgk 2023年01月09日16:22:04
+                    // add by gj reason:essks 2023年01月09日16:22:04
                     String portalId = StringUtils.subStringFromSquareBrackets(requestMsg.getDeviceName());
                     List<String> squareBrackets = StringUtils.matchStringInSquareBrackets(requestMsg.getDeviceName());
                     Installation installation = installationService.findInstallationByPortalId(TenantId.SYS_TENANT_ID, portalId);

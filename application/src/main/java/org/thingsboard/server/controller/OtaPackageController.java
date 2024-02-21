@@ -171,7 +171,7 @@ public class OtaPackageController extends BaseController {
         OtaPackageId otaPackageId = new OtaPackageId(toUUID(strOtaPackageId));
         OtaPackageInfo otaPackageInfo = checkOtaPackageInfoId(otaPackageId, Operation.READ);
         ChecksumAlgorithm checksumAlgorithm = ChecksumAlgorithm.valueOf(checksumAlgorithmStr.toUpperCase());
-        // ota file upload
+        // ota file upload add by gj
         String fileUrl = uploadFile(file).getRecords();
         JsonNode additionalInfo = otaPackageInfo.getAdditionalInfo();
         additionalInfo = JacksonUtil.addJsonNode(additionalInfo, OTA_FILE_URL, fileUrl);

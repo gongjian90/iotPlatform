@@ -15,7 +15,7 @@
 ///
 
 export const environment = {
-  appTitle: 'DRGK IOT',
+  appTitle: 'ESSKS IOT',
   production: true,
 // @ts-ignore
   tbVersion: TB_VERSION,

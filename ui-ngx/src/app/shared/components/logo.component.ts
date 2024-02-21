@@ -27,7 +27,7 @@ export class LogoComponent {
   logo = 'assets/logo.png';
 
   gotoThingsboard(): void {
-    window.open('https://www.drgk.com', '_blank');
+    window.open('https://www.essks.com', '_blank');
   }
 
 }
